@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}Services | Portfolio{% endblock %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <p class="text-sky-400 font-semibold mb-2">What I Offer</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-100 mb-6">Services</h1>
+            <p class="text-slate-400 max-w-2xl mx-auto text-lg">
+                Professional development services tailored to bring your vision to life.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">Web Development</h3>
+                <p class="text-slate-400 mb-6">
+                    Custom web applications built with Django, Flask, and modern JavaScript frameworks. 
+                    From simple landing pages to complex enterprise solutions.
+                </p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Django & Flask</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>React & Next.js</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>RESTful APIs</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Responsive Design</li>
+                </ul>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">Database Design</h3>
+                <p class="text-slate-400 mb-6">
+                    Efficient database architecture and optimization. 
+                    Whether SQL or NoSQL, I design data structures that scale.
+                </p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>PostgreSQL</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>MongoDB</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Redis Caching</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Data Migration</li>
+                </ul>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">Cloud & DevOps</h3>
+                <p class="text-slate-400 mb-6">
+                    Deployment, CI/CD, and cloud infrastructure management. 
+                    Get your application running smoothly in production.
+                </p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>AWS & GCP</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Docker & K8s</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>CI/CD Pipelines</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Monitoring</li>
+                </ul>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">API Development</h3>
+                <p class="text-slate-400 mb-6">
+                    Build robust, scalable APIs for web and mobile applications. 
+                    RESTful and GraphQL APIs with comprehensive documentation.
+                </p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>REST & GraphQL</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Authentication</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>API Documentation</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Rate Limiting</li>
+                </ul>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">Legacy Modernization</h3>
+                <p class="text-slate-400 mb-6">
+                    Upgrade and modernize existing applications. 
+                    Improve performance, security, and user experience.
+                </p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Code Review</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Refactoring</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Migration</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Performance Tuning</li>
+                </ul>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">Technical Consulting</h3>
+                <p class="text-slate-400 mb-6">
+                    Expert guidance on architecture, technology stack, and best practices. 
+                    Make informed decisions for your projects.
+                </p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Architecture</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Tech Stack</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Code Review</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Training</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="mt-16 text-center bg-gradient-to-r from-sky-500/10 to-emerald-500/10 rounded-2xl p-12 border border-slate-700">
+            <h2 class="text-3xl font-bold text-slate-100 mb-4">Ready to Start Your Project?</h2>
+            <p class="text-slate-400 mb-8 max-w-2xl mx-auto">
+                Let's discuss your requirements and find the perfect solution for your needs.
+            </p>
+            <a href="{% url 'contact' %}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-sky-500 to-emerald-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-sky-500/25 transition-all">
+                <i class="fas fa-paper-plane mr-2"></i>Get In Touch
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

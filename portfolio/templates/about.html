@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{% block title %}About Me | Portfolio{% endblock %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-3xl transform rotate-3 opacity-30"></div>
+                    <div class="relative bg-slate-800 rounded-3xl overflow-hidden border border-slate-700">
+                        <div class="h-80 bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="w-40 h-40 mx-auto bg-gradient-to-br from-sky-500 to-emerald-500 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fas fa-user text-6xl text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <p class="text-sky-400 font-semibold mb-2">About Me</p>
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-100 mb-6">
+                    Passionate About Building <span class="gradient-text">Digital Solutions</span>
+                </h1>
+                <div class="space-y-4 text-slate-400">
+                    <p>
+                        I'm a Full Stack Python Developer with expertise in Django, Flask, React, and modern web technologies. 
+                        With over 3 years of experience, I specialize in building scalable web applications, RESTful APIs, 
+                        and real-time applications.
+                    </p>
+                    <p>
+                        My journey in tech started with a curiosity for understanding how things work on the web. 
+                        Today, I help businesses and individuals transform their ideas into powerful digital products.
+                    </p>
+                    <p>
+                        When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, 
+                        or sharing my knowledge through technical blog posts.
+                    </p>
+                </div>
+                
+                <div class="mt-8 flex flex-wrap gap-4">
+                    <a href="{% url 'contact' %}" class="px-6 py-3 bg-gradient-to-r from-sky-500 to-emerald-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-sky-500/25 transition-all">
+                        <i class="fas fa-download mr-2"></i>Download CV
+                    </a>
+                    <a href="{% url 'project_list' %}" class="px-6 py-3 bg-slate-800 text-slate-100 rounded-xl font-semibold border border-slate-700 hover:bg-slate-700 transition-all">
+                        View My Work
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 bg-slate-800/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-slate-100 text-center mb-12">Skills & Expertise</h2>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+                <div class="w-14 h-14 bg-sky-500/20 rounded-xl flex items-center justify-center text-sky-400 mb-4">
+                    <i class="fas fa-server text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-100 mb-2">Backend Development</h3>
+                <p class="text-slate-400 text-sm mb-4">Building robust APIs and server-side applications with Django, Flask, and FastAPI.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">Django</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">Flask</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">FastAPI</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">PostgreSQL</span>
+                </div>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+                <div class="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 mb-4">
+                    <i class="fas fa-laptop-code text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-100 mb-2">Frontend Development</h3>
+                <p class="text-slate-400 text-sm mb-4">Creating responsive and interactive user interfaces with modern frameworks.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">React</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">JavaScript</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">HTML/CSS</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">Tailwind</span>
+                </div>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+                <div class="w-14 h-14 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400 mb-4">
+                    <i class="fas fa-database text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-100 mb-2">Database Design</h3>
+                <p class="text-slate-400 text-sm mb-4">Designing efficient database schemas and optimizing query performance.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">PostgreSQL</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">MongoDB</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">Redis</span>
+                </div>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+                <div class="w-14 h-14 bg-orange-500/20 rounded-xl flex items-center justify-center text-orange-400 mb-4">
+                    <i class="fab fa-docker text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-100 mb-2">DevOps & Cloud</h3>
+                <p class="text-slate-400 text-sm mb-4">Deploying and managing applications on cloud platforms with CI/CD pipelines.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">Docker</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">AWS</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">GitHub Actions</span>
+                </div>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+                <div class="w-14 h-14 bg-pink-500/20 rounded-xl flex items-center justify-center text-pink-400 mb-4">
+                    <i class="fas fa-mobile-alt text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-100 mb-2">Responsive Design</h3>
+                <p class="text-slate-400 text-sm mb-4">Building mobile-first, pixel-perfect interfaces that work on any device.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">Tailwind CSS</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">Bootstrap</span>
+                </div>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+                <div class="w-14 h-14 bg-teal-500/20 rounded-xl flex items-center justify-center text-teal-400 mb-4">
+                    <i class="fas fa-shield-alt text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-100 mb-2">Security</h3>
+                <p class="text-slate-400 text-sm mb-4">Implementing best practices for application security and data protection.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">OAuth</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">JWT</span>
+                    <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">HTTPS</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-slate-100 text-center mb-12">Work Experience</h2>
+        
+        <div class="space-y-8">
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700">
+                <div class="flex flex-wrap justify-between items-start mb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-100">Senior Python Developer</h3>
+                        <p class="text-sky-400">Tech Company Inc.</p>
+                    </div>
+                    <span class="px-4 py-1 bg-slate-700 text-slate-300 text-sm rounded-full">2023 - Present</span>
+                </div>
+                <p class="text-slate-400">
+                    Leading development of enterprise-scale Django applications, mentoring junior developers, 
+                    and implementing microservices architecture using Python and FastAPI.
+                </p>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700">
+                <div class="flex flex-wrap justify-between items-start mb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-100">Full Stack Developer</h3>
+                        <p class="text-emerald-400">Startup XYZ</p>
+                    </div>
+                    <span class="px-4 py-1 bg-slate-700 text-slate-300 text-sm rounded-full">2021 - 2023</span>
+                </div>
+                <p class="text-slate-400">
+                    Developed and maintained full-stack web applications using Django, React, and PostgreSQL. 
+                    Implemented RESTful APIs and real-time features using WebSockets.
+                </p>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700">
+                <div class="flex flex-wrap justify-between items-start mb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-100">Junior Developer</h3>
+                        <p class="text-slate-400">Digital Agency</p>
+                    </div>
+                    <span class="px-4 py-1 bg-slate-700 text-slate-300 text-sm rounded-full">2020 - 2021</span>
+                </div>
+                <p class="text-slate-400">
+                    Started my professional journey building WordPress sites and small Django projects. 
+                    Learned the fundamentals of web development and best practices.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

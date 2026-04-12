@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if profile.seo_title %}Services | {{ profile.name }}{% else %}Services | Portfolio{% endif %}{% endblock %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <p class="text-sky-400 font-semibold mb-2">What I Offer</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-100 mb-6">Services</h1>
+            <p class="text-slate-400 max-w-2xl mx-auto text-lg">
+                Professional development services tailored to bring your vision to life.
+            </p>
+        </div>
+        
+        {% if services %}
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for service in services %}
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br {% if service.icon_color == 'sky' %}from-sky-500 to-emerald-500{% elif service.icon_color == 'emerald' %}from-emerald-500 to-teal-500{% elif service.icon_color == 'purple' %}from-purple-500 to-pink-500{% elif service.icon_color == 'orange' %}from-orange-500 to-red-500{% elif service.icon_color == 'teal' %}from-teal-500 to-cyan-500{% else %}from-pink-500 to-purple-500{% endif %} rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="{{ service.icon_class }}"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">{{ service.title }}</h3>
+                <p class="text-slate-400 mb-6">{{ service.description }}</p>
+                {% if service.features %}
+                <ul class="space-y-2 text-slate-300">
+                    {% for feature in service.features %}
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">Full Stack Development</h3>
+                <p class="text-slate-400 mb-6">End-to-end web application development with modern technologies.</p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Django & Flask</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>React & Next.js</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>RESTful APIs</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Responsive Design</li>
+                </ul>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">Data Analysis</h3>
+                <p class="text-slate-400 mb-6">Transform raw data into actionable insights for better decision-making.</p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Python & Pandas</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>SQL & Excel</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Data Visualization</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Statistical Analysis</li>
+                </ul>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-file-excel"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">Microsoft Suite</h3>
+                <p class="text-slate-400 mb-6">Professional spreadsheet, presentation, and document solutions.</p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Excel & Power BI</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Word & PowerPoint</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>VBA Automation</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Data Dashboards</li>
+                </ul>
+            </div>
+
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">Cybersecurity Analysis</h3>
+                <p class="text-slate-400 mb-6">Protect your digital assets with comprehensive security assessments.</p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Vulnerability Assessment</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Security Audits</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Risk Analysis</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Security Best Practices</li>
+                </ul>
+            </div>
+
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">Database Design</h3>
+                <p class="text-slate-400 mb-6">Efficient database architecture and optimization for scalable applications.</p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>PostgreSQL & MySQL</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>MongoDB</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Redis Caching</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Data Migration</li>
+                </ul>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 card-hover">
+                <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center text-white text-2xl mb-6">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-100 mb-4">Cloud & DevOps</h3>
+                <p class="text-slate-400 mb-6">Deployment, CI/CD, and cloud infrastructure management.</p>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>AWS & GCP</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Docker & Kubernetes</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>CI/CD Pipelines</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i>Monitoring</li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="mt-16 text-center bg-gradient-to-r from-sky-500/10 to-emerald-500/10 rounded-2xl p-12 border border-slate-700">
+            <h2 class="text-3xl font-bold text-slate-100 mb-4">Ready to Start Your Project?</h2>
+            <p class="text-slate-400 mb-8 max-w-2xl mx-auto">
+                Let's discuss your requirements and find the perfect solution for your needs.
+            </p>
+            <a href="{% url 'contact' %}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-sky-500 to-emerald-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-sky-500/25 transition-all">
+                <i class="fas fa-paper-plane mr-2"></i>Get In Touch
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

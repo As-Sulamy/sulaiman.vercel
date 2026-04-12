@@ -1,0 +1,80 @@
+{% extends "admin/base.html" %}
+
+{% load i18n %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .form-row { background: #0f172a; border-bottom: 1px solid #1e293b; padding: 16px; }
+    label { color: #f8fafc; font-weight: 500; display: block; margin-bottom: 6px; }
+    input[type="text"], input[type="email"], input[type="password"], input[type="url"], input[type="number"], textarea, select {
+        background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #f8fafc; padding: 10px; width: 100%; max-width: 500px;
+    }
+    input:focus, textarea:focus, select:focus { border-color: #38bdf8; outline: none; }
+    textarea { min-height: 100px; }
+    .submit-row { background: #1e293b; padding: 16px; margin-top: 20px; border-radius: 0 0 12px 12px; }
+    .submit-row input { background: #38bdf8; color: #0f172a; border: none; padding: 10px 20px; border-radius: 8px; margin-right: 8px; cursor: pointer; font-weight: 600; }
+    .submit-row input:hover { background: #0ea5e9; }
+    .deletelink-box { margin-left: 20px; }
+    .deletelink-box input { background: #ef4444 !important; }
+    .deletelink-box input:hover { background: #dc2626 !important; }
+    .errornote { background: #ef4444/20; border: 1px solid #ef4444; color: #ef4444; padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+    .errorlist { color: #ef4444; list-style: none; padding: 0; margin: 8px 0; }
+    .errorlist li { background: #ef4444/10; padding: 8px; border-radius: 4px; margin-top: 4px; }
+    fieldset { background: #0f172a; border: 1px solid #334155; border-radius: 12px; margin-bottom: 20px; padding: 16px; }
+    legend { color: #f8fafc; font-weight: 600; padding: 0 8px; }
+    .help { color: #64748b; font-size: 12px; margin-top: 4px; }
+    .readonly { background: #1e293b; padding: 10px; border-radius: 8px; color: #cbd5e1; }
+</style>
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} change-form{% endblock %}
+
+{% block breadcrumbs %}
+<div class="px-8 py-4">
+    <div class="flex items-center gap-2 text-sm">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        <span>/</span>
+        <span>{{ title }}</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <form method="post" {% if has_file_field %}enctype="multipart/form-data"{% endif %}>
+        {% csrf_token %}
+        
+        {% if errors %}
+        <p class="errornote">Please correct the errors below.</p>
+        {% endif %}
+        
+        {% for fieldset in adminform %}
+        {% include "admin/includes/fieldset.html" %}
+        {% endfor %}
+        
+        {% block after_field_sets %}{% endblock %}
+        {% for inline_admin_formset in inline_admin_formsets %}
+        {% include inline_admin_formset.opts.template %}
+        {% endfor %}
+        {% block after_related_objects %}{% endblock %}
+        
+        <div class="submit-row">
+            <input type="submit" value="{% trans 'Save' %}" class="default" name="_save">
+            {% if show_save_and_add_another %}
+            <input type="submit" value="{% trans 'Save and add another' %}" name="_addanother">
+            {% endif %}
+            {% if show_save_and_continue %}
+            <input type="submit" value="{% trans 'Save and continue editing' %}" name="_continue">
+            {% endif %}
+            {% if show_delete_link %}
+            <p class="deletelink-box"><a href="delete/" class="deletelink">{% trans "Delete" %}</a></p>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extrascript %}
+{{ adminform.media }}
+{% endblock %}

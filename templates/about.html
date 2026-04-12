@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if profile.seo_title %}About | {{ profile.name }}{% else %}About | Portfolio{% endif %}{% endblock %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-3xl transform rotate-3 opacity-30"></div>
+                    <div class="relative bg-slate-800 rounded-3xl overflow-hidden border border-slate-700">
+                        <div class="h-80 bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+                            {% if profile.profile_image %}
+                            <img src="{{ profile.profile_image.url }}" alt="{{ profile.name }}" class="h-full w-full object-cover">
+                            {% else %}
+                            <div class="w-40 h-40 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-6xl text-white"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <p class="text-sky-400 font-semibold mb-2">About Me</p>
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-100 mb-6">
+                    {{ profile.about_title|default:"Passionate About Building" }} <span class="gradient-text">Digital Solutions</span>
+                </h1>
+                <div class="space-y-4 text-slate-400">
+                    <p>{{ profile.about_content|default:profile.subtitle|default:"I'm a Full Stack Python Developer with expertise in Django, Flask, React, and modern web technologies. With over 3 years of experience, I specialize in building scalable web applications, RESTful APIs, and real-time applications." }}</p>
+                </div>
+                
+                <div class="mt-8 flex flex-wrap gap-4">
+                    {% if profile.resume_cv %}
+                    <a href="{{ profile.resume_cv.url }}" download class="px-6 py-3 bg-gradient-to-r from-sky-500 to-emerald-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-sky-500/25 transition-all">
+                        <i class="fas fa-download mr-2"></i>Download CV
+                    </a>
+                    {% else %}
+                    <a href="{% url 'contact' %}" class="px-6 py-3 bg-gradient-to-r from-sky-500 to-emerald-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-sky-500/25 transition-all">
+                        <i class="fas fa-paper-plane mr-2"></i>Contact Me
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'project_list' %}" class="px-6 py-3 bg-slate-800 text-slate-100 rounded-xl font-semibold border border-slate-700 hover:bg-slate-700 transition-all">
+                        View My Work
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if skills %}
+<section class="py-20 bg-slate-800/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-slate-100 text-center mb-12">Skills & Expertise</h2>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% regroup skills by category as category_list %}
+            {% for category in category_list %}
+            <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+                <h3 class="text-xl font-bold text-slate-100 mb-4 capitalize">{{ category.grouper }}</h3>
+                <div class="space-y-4">
+                    {% for skill in category.list %}
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-slate-300">{{ skill.name }}</span>
+                            <span class="text-slate-500">{{ skill.proficiency }}%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-sky-500 to-emerald-500" style="width: {{ skill.proficiency }}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if experiences %}
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-slate-100 text-center mb-12">Work Experience</h2>
+        
+        <div class="space-y-8">
+            {% for exp in experiences %}
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700">
+                <div class="flex flex-wrap justify-between items-start mb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-100">{{ exp.title }}</h3>
+                        <p class="text-sky-400">{{ exp.company }}</p>
+                        {% if exp.location %}
+                        <p class="text-slate-500 text-sm"><i class="fas fa-map-marker-alt mr-1"></i>{{ exp.location }}</p>
+                        {% endif %}
+                    </div>
+                    <span class="px-4 py-1 bg-slate-700 text-slate-300 text-sm rounded-full">
+                        {% if exp.is_current %}
+                        Present
+                        {% else %}
+                        {{ exp.end_date|date:"M Y" }}
+                        {% endif %}
+                    </span>
+                </div>
+                <p class="text-slate-400">{{ exp.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if education %}
+<section class="py-20 bg-slate-800/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-slate-100 text-center mb-12">Education</h2>
+        
+        <div class="space-y-8">
+            {% for edu in education %}
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700">
+                <div class="flex flex-wrap justify-between items-start mb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-100">{{ edu.degree }}</h3>
+                        <p class="text-emerald-400">{{ edu.institution }}</p>
+                        {% if edu.location %}
+                        <p class="text-slate-500 text-sm"><i class="fas fa-map-marker-alt mr-1"></i>{{ edu.location }}</p>
+                        {% endif %}
+                    </div>
+                    <span class="px-4 py-1 bg-slate-700 text-slate-300 text-sm rounded-full">
+                        {% if edu.is_current %}
+                        Present
+                        {% else %}
+                        {{ edu.end_date|date:"Y" }}
+                        {% endif %}
+                    </span>
+                </div>
+                {% if edu.description %}
+                <p class="text-slate-400">{{ edu.description }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load markdown_extras %}
+
+{% block title %}{{ project.title }} | Projects{% endblock %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <a href="{% url 'project_list' %}" class="inline-flex items-center text-sky-400 hover:text-sky-300 mb-8 transition-colors">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Projects
+        </a>
+        
+        <div class="grid lg:grid-cols-2 gap-12">
+            <div>
+                {% if project.image %}
+                <div class="rounded-2xl overflow-hidden border border-slate-700 mb-8">
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-auto">
+                </div>
+                {% endif %}
+                
+                <div class="flex flex-wrap gap-4">
+                    {% if project.external_link %}
+                    <a href="{{ project.external_link }}" target="_blank" class="px-6 py-3 bg-gradient-to-r from-sky-500 to-emerald-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-sky-500/25 transition-all">
+                        <i class="fas fa-external-link-alt mr-2"></i>Live Demo
+                    </a>
+                    {% endif %}
+                    {% if project.github_link %}
+                    <a href="{{ project.github_link }}" target="_blank" class="px-6 py-3 bg-slate-800 text-slate-100 rounded-xl font-semibold border border-slate-700 hover:bg-slate-700 transition-all">
+                        <i class="fab fa-github mr-2"></i>Source Code
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div>
+                <h1 class="text-4xl font-bold text-slate-100 mb-4">{{ project.title }}</h1>
+                
+                <div class="flex items-center gap-4 text-slate-500 mb-6">
+                    <span><i class="far fa-calendar mr-1"></i>{{ project.created_date|date:"M d, Y" }}</span>
+                </div>
+                
+                <p class="text-slate-400 text-lg mb-8">{{ project.description }}</p>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold text-slate-100 mb-4">Technologies Used</h3>
+                    <div class="flex flex-wrap gap-2">
+                        {% for tech in project.technologies|split:"," %}
+                        <span class="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg border border-slate-700">{{ tech|trim }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if related_projects %}
+<section class="py-20 bg-slate-800/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-slate-100 mb-12">More Projects</h2>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for related in related_projects %}
+            <article class="bg-slate-800/50 rounded-2xl overflow-hidden border border-slate-700 card-hover group">
+                {% if related.image %}
+                <div class="relative overflow-hidden">
+                    <img src="{{ related.image.url }}" alt="{{ related.title }}" class="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                </div>
+                {% endif %}
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-slate-100 mb-3 group-hover:text-sky-400 transition-colors">
+                        <a href="{{ related.get_absolute_url }}">{{ related.title }}</a>
+                    </h3>
+                    <p class="text-slate-400 text-sm line-clamp-2">{{ related.description|truncatechars:100 }}</p>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

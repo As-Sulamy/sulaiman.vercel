@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Projects | Portfolio{% endblock %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <p class="text-sky-400 font-semibold mb-2">My Work</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-100 mb-6">Featured Projects</h1>
+            <p class="text-slate-400 max-w-2xl mx-auto text-lg">
+                A collection of projects showcasing my expertise in full-stack development, 
+                from concept to deployment.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for project in projects %}
+            <article class="bg-slate-800/50 rounded-2xl overflow-hidden border border-slate-700 card-hover group">
+                <div class="relative overflow-hidden">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-56 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    {% else %}
+                    <div class="w-full h-56 bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+                        <i class="fas fa-image text-6xl text-slate-600"></i>
+                    </div>
+                    {% endif %}
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {% if project.github_link %}
+                        <a href="{{ project.github_link }}" target="_blank" class="w-10 h-10 bg-slate-800/90 rounded-lg flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-700 transition-all">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        {% endif %}
+                        {% if project.external_link %}
+                        <a href="{{ project.external_link }}" target="_blank" class="w-10 h-10 bg-slate-800/90 rounded-lg flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-700 transition-all">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-slate-100 mb-2 group-hover:text-sky-400 transition-colors">
+                        <a href="{{ project.get_absolute_url }}">{{ project.title }}</a>
+                    </h3>
+                    <p class="text-slate-400 text-sm mb-4 line-clamp-2">{{ project.description|truncatechars:100 }}</p>
+                    <div class="flex flex-wrap gap-2">
+                        {% for tech in project.technologies|split:"," %}
+                        <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">{{ tech|trim }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <div class="w-24 h-24 mx-auto mb-6 bg-slate-800 rounded-full flex items-center justify-center">
+                    <i class="fas fa-folder-open text-4xl text-slate-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-400 mb-2">No projects yet</h3>
+                <p class="text-slate-500">Check back soon for amazing projects!</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if is_paginated %}
+        <div class="mt-12 flex justify-center gap-2">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% endif %}
+            
+            {% for num in paginator.page_range %}
+            <a href="?page={{ num }}" class="px-4 py-2 {% if page_obj.number == num %}bg-sky-500 text-white{% else %}bg-slate-800 text-slate-300 hover:bg-slate-700{% endif %} rounded-lg transition-colors">
+                {{ num }}
+            </a>
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load markdown_extras %}
+
+{% block title %}Home | Professional Portfolio{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="min-h-screen flex items-center relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
+    <div class="absolute top-20 right-0 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-20 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <p class="text-sky-400 font-semibold mb-4 tracking-wide">
+                    <i class="fas fa-terminal mr-2"></i>Hello, I'm
+                </p>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    <span class="text-slate-100">Full Stack</span><br>
+                    <span class="gradient-text">Developer</span>
+                </h1>
+                <p class="text-xl text-slate-400 mb-8 max-w-lg">
+                    Building scalable web applications with Django, React, and modern technologies. 
+                    Transforming ideas into elegant, functional digital experiences.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="{% url 'project_list' %}" class="px-8 py-4 bg-gradient-to-r from-sky-500 to-emerald-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-sky-500/25 transition-all transform hover:-translate-y-1">
+                        <i class="fas fa-folder-open mr-2"></i>View Projects
+                    </a>
+                    <a href="{% url 'contact' %}" class="px-8 py-4 bg-slate-800 text-slate-100 rounded-xl font-semibold border border-slate-700 hover:bg-slate-700 hover:border-slate-600 transition-all">
+                        <i class="fas fa-paper-plane mr-2"></i>Get In Touch
+                    </a>
+                </div>
+                <div class="mt-12 flex items-center gap-8">
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-slate-100">50+</p>
+                        <p class="text-slate-500 text-sm">Projects Done</p>
+                    </div>
+                    <div class="w-px h-12 bg-slate-700"></div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-slate-100">3+</p>
+                        <p class="text-slate-500 text-sm">Years Experience</p>
+                    </div>
+                    <div class="w-px h-12 bg-slate-700"></div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-slate-100">30+</p>
+                        <p class="text-slate-500 text-sm">Happy Clients</p>
+                    </div>
+                </div>
+            </div>
+            <div class="relative hidden lg:block">
+                <div class="relative w-full h-96">
+                    <div class="absolute inset-0 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-3xl transform rotate-6 opacity-30"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-3xl transform -rotate-3 opacity-20"></div>
+                    <div class="absolute inset-0 bg-slate-800 rounded-3xl border border-slate-700 overflow-hidden">
+                        <div class="h-8 bg-slate-700 flex items-center px-4 gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="p-6 font-mono text-sm">
+                            <p class="text-slate-500"># Python Developer</p>
+                            <p class="text-emerald-400 mt-2">class Developer:</p>
+                            <p class="text-sky-400 pl-4">def __init__(self):</p>
+                            <p class="text-slate-300 pl-8">self.name = "Your Name"</p>
+                            <p class="text-slate-300 pl-8">self.skills = ["Django", "React", "Python"]</p>
+                            <p class="text-sky-400 pl-4 mt-2">def build_awesome(self):</p>
+                            <p class="text-slate-300 pl-8">return "Solutions"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tech Stack -->
+<section class="py-16 bg-slate-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-slate-100 mb-4">Tech Stack</h2>
+            <p class="text-slate-400">Technologies I work with daily</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-6">
+            <div class="px-6 py-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-sky-500 transition-all">
+                <i class="fab fa-python text-4xl text-yellow-400"></i>
+                <p class="text-slate-300 mt-2 text-sm">Python</p>
+            </div>
+            <div class="px-6 py-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-emerald-500 transition-all">
+                <i class="fas fa-leaf text-4xl text-emerald-400"></i>
+                <p class="text-slate-300 mt-2 text-sm">Django</p>
+            </div>
+            <div class="px-6 py-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-sky-400 transition-all">
+                <i class="fab fa-react text-4xl text-sky-400"></i>
+                <p class="text-slate-300 mt-2 text-sm">React</p>
+            </div>
+            <div class="px-6 py-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-yellow-400 transition-all">
+                <i class="fab fa-js text-4xl text-yellow-400"></i>
+                <p class="text-slate-300 mt-2 text-sm">JavaScript</p>
+            </div>
+            <div class="px-6 py-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-sky-500 transition-all">
+                <i class="fab fa-docker text-4xl text-sky-500"></i>
+                <p class="text-slate-300 mt-2 text-sm">Docker</p>
+            </div>
+            <div class="px-6 py-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-emerald-400 transition-all">
+                <i class="fab fa-aws text-4xl text-orange-400"></i>
+                <p class="text-slate-300 mt-2 text-sm">AWS</p>
+            </div>
+            <div class="px-6 py-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-sky-500 transition-all">
+                <i class="fas fa-database text-4xl text-sky-400"></i>
+                <p class="text-slate-300 mt-2 text-sm">PostgreSQL</p>
+            </div>
+            <div class="px-6 py-4 bg-slate-800 rounded-xl border border-slate-700 hover:border-pink-500 transition-all">
+                <i class="fab fa-git-alt text-4xl text-orange-500"></i>
+                <p class="text-slate-300 mt-2 text-sm">Git</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects -->
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <p class="text-sky-400 font-semibold mb-2">Portfolio</p>
+                <h2 class="text-4xl font-bold text-slate-100">Featured Projects</h2>
+            </div>
+            <a href="{% url 'project_list' %}" class="hidden md:flex items-center text-sky-400 hover:text-sky-300 transition-colors">
+                View All Projects <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for project in projects %}
+            <article class="bg-slate-800/50 rounded-2xl overflow-hidden border border-slate-700 card-hover group">
+                <div class="relative overflow-hidden">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-56 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    {% else %}
+                    <div class="w-full h-56 bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+                        <i class="fas fa-image text-6xl text-slate-600"></i>
+                    </div>
+                    {% endif %}
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {% if project.github_link %}
+                        <a href="{{ project.github_link }}" target="_blank" class="w-10 h-10 bg-slate-800/90 rounded-lg flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-700 transition-all">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        {% endif %}
+                        {% if project.external_link %}
+                        <a href="{{ project.external_link }}" target="_blank" class="w-10 h-10 bg-slate-800/90 rounded-lg flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-700 transition-all">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-slate-100 mb-2 group-hover:text-sky-400 transition-colors">
+                        <a href="{{ project.get_absolute_url }}">{{ project.title }}</a>
+                    </h3>
+                    <p class="text-slate-400 text-sm mb-4 line-clamp-2">{{ project.description|truncatechars:100 }}</p>
+                    <div class="flex flex-wrap gap-2">
+                        {% for tech in project.technologies|slice:":3" %}
+                        <span class="px-3 py-1 bg-slate-700 text-slate-300 text-xs rounded-full">{{ tech|truncatewords:1 }}</span>
+                        {% endfor %}
+                        {% if project.technologies|length > 3 %}
+                        <span class="px-3 py-1 bg-slate-700 text-slate-400 text-xs rounded-full">+{{ project.technologies|length|add:"-3" }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <div class="w-24 h-24 mx-auto mb-6 bg-slate-800 rounded-full flex items-center justify-center">
+                    <i class="fas fa-folder-open text-4xl text-slate-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-400 mb-2">No projects yet</h3>
+                <p class="text-slate-500">Check back soon for amazing projects!</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="mt-8 text-center md:hidden">
+            <a href="{% url 'project_list' %}" class="inline-flex items-center text-sky-400 hover:text-sky-300 transition-colors">
+                View All Projects <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Section -->
+{% if blogs %}
+<section class="py-20 bg-slate-800/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <p class="text-emerald-400 font-semibold mb-2">Insights</p>
+                <h2 class="text-4xl font-bold text-slate-100">Latest Articles</h2>
+            </div>
+            <a href="{% url 'blog_list' %}" class="hidden md:flex items-center text-emerald-400 hover:text-emerald-300 transition-colors">
+                View All Posts <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for blog in blogs %}
+            <article class="bg-slate-800/50 rounded-2xl overflow-hidden border border-slate-700 card-hover group">
+                {% if blog.image %}
+                <div class="relative overflow-hidden">
+                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                </div>
+                {% endif %}
+                <div class="p-6">
+                    <div class="flex items-center gap-4 text-sm text-slate-500 mb-3">
+                        <span><i class="far fa-calendar mr-1"></i>{{ blog.published_date|date:"M d, Y" }}</span>
+                        <span><i class="far fa-user mr-1"></i>{{ blog.author }}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-100 mb-3 group-hover:text-emerald-400 transition-colors">
+                        <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a>
+                    </h3>
+                    <p class="text-slate-400 text-sm mb-4 line-clamp-3">{{ blog.summary|truncatechars:120 }}</p>
+                    <a href="{{ blog.get_absolute_url }}" class="inline-flex items-center text-emerald-400 hover:text-emerald-300 transition-colors text-sm font-semibold">
+                        Read More <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        
+        <div class="mt-8 text-center md:hidden">
+            <a href="{% url 'blog_list' %}" class="inline-flex items-center text-emerald-400 hover:text-emerald-300 transition-colors">
+                View All Posts <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Contact Section -->
+<section class="py-20" id="contact">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-16">
+            <div>
+                <p class="text-sky-400 font-semibold mb-2">Get In Touch</p>
+                <h2 class="text-4xl font-bold text-slate-100 mb-6">Let's Work Together</h2>
+                <p class="text-slate-400 mb-8 text-lg">
+                    Have a project in mind or want to collaborate? I'd love to hear from you. 
+                    Drop me a message and I'll get back to you as soon as possible.
+                </p>
+                
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-slate-800 rounded-xl flex items-center justify-center text-sky-400">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-slate-500 text-sm">Email</p>
+                            <p class="text-slate-100 font-medium">[EMAIL_ADDRESS]</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-slate-800 rounded-xl flex items-center justify-center text-emerald-400">
+                            <i class="fas fa-map-marker-alt text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-slate-500 text-sm">Location</p>
+                            <p class="text-slate-100 font-medium">Ilorin, Nigeria</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-slate-800 rounded-xl flex items-center justify-center text-slate-400">
+                            <i class="fas fa-clock text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-slate-500 text-sm">Response Time</p>
+                            <p class="text-slate-100 font-medium">Within 24 hours</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700">
+                <h3 class="text-2xl font-bold text-slate-100 mb-6">Send a Message</h3>
+                
+                {% if messages %}
+                <div class="mb-6 p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-lg">
+                    {% for message in messages %}
+                    <p class="text-emerald-400 flex items-center gap-2">
+                        <i class="fas fa-check-circle"></i> {{ message }}
+                    </p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <form method="POST" class="space-y-5">
+                    {% csrf_token %}
+                    <div>
+                        <label for="id_name" class="block text-sm font-medium text-slate-300 mb-2">Your Name</label>
+                        {{ contact_form.name }}
+                    </div>
+                    <div>
+                        <label for="id_email" class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
+                        {{ contact_form.email }}
+                    </div>
+                    <div>
+                        <label for="id_subject" class="block text-sm font-medium text-slate-300 mb-2">Subject</label>
+                        {{ contact_form.subject }}
+                    </div>
+                    <div>
+                        <label for="id_message" class="block text-sm font-medium text-slate-300 mb-2">Message</label>
+                        {{ contact_form.message }}
+                    </div>
+                    <button type="submit" class="w-full py-4 bg-gradient-to-r from-sky-500 to-emerald-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-sky-500/25 transition-all transform hover:-translate-y-1">
+                        <i class="fas fa-paper-plane mr-2"></i>Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog | Portfolio{% endblock %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <p class="text-emerald-400 font-semibold mb-2">Insights & Tutorials</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-100 mb-6">Technical Blog</h1>
+            <p class="text-slate-400 max-w-2xl mx-auto text-lg">
+                Thoughts on web development, programming best practices, and building better software.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for blog in blogs %}
+            <article class="bg-slate-800/50 rounded-2xl overflow-hidden border border-slate-700 card-hover group">
+                {% if blog.image %}
+                <div class="relative overflow-hidden">
+                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                </div>
+                {% else %}
+                <div class="w-full h-48 bg-gradient-to-br from-sky-500/20 to-emerald-500/20 flex items-center justify-center">
+                    <i class="fas fa-blog text-4xl text-slate-600"></i>
+                </div>
+                {% endif %}
+                <div class="p-6">
+                    <div class="flex items-center gap-4 text-sm text-slate-500 mb-3">
+                        <span><i class="far fa-calendar mr-1"></i>{{ blog.published_date|date:"M d, Y" }}</span>
+                        <span><i class="far fa-user mr-1"></i>{{ blog.author }}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-100 mb-3 group-hover:text-emerald-400 transition-colors">
+                        <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a>
+                    </h3>
+                    <p class="text-slate-400 text-sm mb-4 line-clamp-3">{{ blog.summary|truncatechars:120 }}</p>
+                    <a href="{{ blog.get_absolute_url }}" class="inline-flex items-center text-emerald-400 hover:text-emerald-300 transition-colors text-sm font-semibold">
+                        Read More <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </article>
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <div class="w-24 h-24 mx-auto mb-6 bg-slate-800 rounded-full flex items-center justify-center">
+                    <i class="fas fa-blog text-4xl text-slate-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-400 mb-2">No blog posts yet</h3>
+                <p class="text-slate-500">Check back soon for technical articles!</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if is_paginated %}
+        <div class="mt-12 flex justify-center gap-2">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% endif %}
+            
+            {% for num in paginator.page_range %}
+            <a href="?page={{ num }}" class="px-4 py-2 {% if page_obj.number == num %}bg-sky-500 text-white{% else %}bg-slate-800 text-slate-300 hover:bg-slate-700{% endif %} rounded-lg transition-colors">
+                {{ num }}
+            </a>
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

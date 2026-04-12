@@ -1,0 +1,9 @@
+<ul>
+{% for choice in spec.choices %}
+<li>
+    <a href="{{ choice.link }}" {% if choice.selected %}style="color: #38bdf8; font-weight: bold;"{% endif %}>
+        {{ choice.display }}
+    </a>
+</li>
+{% endfor %}
+</ul>
