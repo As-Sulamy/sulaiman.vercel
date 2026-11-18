@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Hire Me | {{ profile.name|default:"Portfolio" }}{% endblock %}
+
+{% block content %}
+<section class="relative overflow-hidden py-16 sm:py-24">
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
+    <div class="absolute -top-20 right-0 h-80 w-80 rounded-full bg-sky-500/10 blur-3xl"></div>
+    <div class="relative mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
+        <div class="lg:sticky lg:top-28 lg:self-start">
+            <p class="mb-3 font-semibold uppercase tracking-[0.18em] text-sky-400">Start a project</p>
+            <h1 class="mb-6 text-4xl font-bold leading-tight text-slate-100 sm:text-5xl">Let’s build something meaningful.</h1>
+            <p class="max-w-xl text-lg leading-relaxed text-slate-400">
+                Tell me what you are working on, what you need, and when you hope to launch. I’ll review the details and get back to you.
+            </p>
+            <div class="mt-8 space-y-4">
+                {% if profile.email %}
+                <p class="flex items-center gap-3 text-slate-300"><i class="fas fa-envelope w-5 text-sky-400" aria-hidden="true"></i>{{ profile.email }}</p>
+                {% endif %}
+                {% if profile.response_time %}
+                <p class="flex items-center gap-3 text-slate-300"><i class="fas fa-clock w-5 text-emerald-400" aria-hidden="true"></i>Typically replies {{ profile.response_time|lower }}</p>
+                {% endif %}
+            </div>
+            <a href="{% url 'contact' %}" class="mt-8 inline-flex items-center gap-2 font-semibold text-slate-300 hover:text-white">
+                Have a general question? Contact me <i class="fas fa-arrow-right text-sm" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div class="rounded-3xl border border-slate-700 bg-slate-800/50 p-6 shadow-2xl sm:p-9">
+            <h2 class="text-2xl font-bold text-slate-100">Project inquiry</h2>
+            <p class="mb-7 mt-2 text-slate-400">The more detail you share, the better I can respond.</p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    {% if 'support' not in message.tags %}
+                    <p class="mb-5 rounded-xl bg-emerald-500/10 p-4 text-emerald-400" role="status">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" class="space-y-5">
+                {% csrf_token %}
+                <div class="grid gap-5 sm:grid-cols-2">
+                    {% for field in form %}
+                    <div class="{% if field.name == 'project_details' %}sm:col-span-2{% endif %}">
+                        <label for="{{ field.id_for_label }}" class="mb-2 block text-sm font-medium text-slate-300">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="mt-1 text-xs text-slate-500">{{ field.help_text }}</p>{% endif %}
+                        {% for error in field.errors %}<p class="mt-1 text-sm text-red-400" role="alert">{{ error }}</p>{% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if form.non_field_errors %}
+                <div class="rounded-lg bg-red-500/10 p-3 text-sm text-red-400" role="alert">{{ form.non_field_errors }}</div>
+                {% endif %}
+                <button type="submit" class="w-full rounded-xl bg-gradient-to-r from-sky-500 to-emerald-500 px-6 py-4 font-semibold text-white transition-opacity hover:opacity-90">
+                    Send project inquiry <i class="fas fa-arrow-right ml-2" aria-hidden="true"></i>
+                </button>
+                <p class="text-center text-xs text-slate-500">Your details are used only to respond to this inquiry.</p>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

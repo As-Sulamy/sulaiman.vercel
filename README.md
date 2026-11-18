@@ -48,6 +48,33 @@ python manage.py runserver
 
 Visit `http://127.0.0.1:8000` for the website and `http://127.0.0.1:8000/admin` for the admin dashboard.
 
+### Paystack Support
+
+The Support Me bar and checkout modal use Paystack Checkout and verify completed payments on the server. Configure the encryption key before entering your Paystack secret in Django Admin.
+
+Generate a long random Django key:
+```powershell
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+Set it in local PowerShell before starting Django:
+```powershell
+$env:DJANGO_SECRET_KEY = "your-generated-django-secret"
+python manage.py runserver
+```
+
+For Vercel, add `DJANGO_SECRET_KEY` under the project's Environment Variables and redeploy. Keep it stable: it encrypts the Paystack secret stored in the database.
+
+Then open Django Admin → **Paystack & Support Settings**:
+- Create the single settings record.
+- Add your Paystack **secret key** there. It is encrypted before storage and is never displayed again.
+- Adjust the suggested naira amounts or disable support checkout as needed.
+- Use a Paystack test key for testing and a live key only in production.
+
+Do not commit Paystack credentials or your `DJANGO_SECRET_KEY` to source control. The older `PAYSTACK_SECRET_KEY` environment variable remains supported as a fallback for existing deployments.
+
+Your profile and About details are editable in Admin under **Profile**. Add the people who inspire you under **Inspirations**; their nodes and your profile node open detail popups on the Inspiration page. Project inquiries from the separate **Hire Me** form are saved in Admin under **Hire Me Inquiries**.
+
 ## Project Structure
 
 ```

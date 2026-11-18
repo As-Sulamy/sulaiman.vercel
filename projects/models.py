@@ -1,8 +1,28 @@
+import base64
+import hashlib
+
+from cryptography.fernet import Fernet, InvalidToken
+from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from django.utils.text import slugify
 from markdownx.models import MarkdownxField
+
+
+def default_support_amounts():
+    return [2000, 5000, 10000, 20000]
+
+
+def _paystack_cipher():
+    encryption_secret = settings.PAYSTACK_CREDENTIALS_ENCRYPTION_KEY
+    if not encryption_secret:
+        raise ImproperlyConfigured(
+            'Set DJANGO_SECRET_KEY before saving a Paystack secret in Admin.'
+        )
+    key = base64.urlsafe_b64encode(hashlib.sha256(encryption_secret.encode()).digest())
+    return Fernet(key)
 
 
 class Project(models.Model):
@@ -246,3 +266,127 @@ class Service(models.Model):
     
     def __str__(self):
         return self.title
+
+
+class Inspiration(models.Model):
+    name = models.CharField(max_length=150)
+    role = models.CharField(max_length=150, blank=True)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='inspirations/', blank=True)
+    link = models.URLField(blank=True, help_text="Optional link to their work or profile")
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name = 'Inspiration'
+        verbose_name_plural = 'Inspirations'
+
+    def __str__(self):
+        return self.name
+
+
+class HireRequest(models.Model):
+    PROJECT_TYPE_CHOICES = [
+        ('', 'Choose a service (optional)'),
+        ('website', 'Website or web application'),
+        ('mobile', 'Mobile application'),
+        ('data', 'Data analysis or dashboard'),
+        ('security', 'Cybersecurity'),
+        ('consulting', 'Consulting or something else'),
+    ]
+    BUDGET_CHOICES = [
+        ('', 'Select a budget (optional)'),
+        ('under-100k', 'Under ₦100,000'),
+        ('100k-500k', '₦100,000 – ₦500,000'),
+        ('500k-1m', '₦500,000 – ₦1,000,000'),
+        ('over-1m', 'Over ₦1,000,000'),
+        ('not-sure', 'Not sure yet'),
+    ]
+    TIMELINE_CHOICES = [
+        ('', 'Select a timeline (optional)'),
+        ('asap', 'As soon as possible'),
+        ('1-month', 'Within a month'),
+        ('1-3-months', '1–3 months'),
+        ('flexible', 'Flexible'),
+    ]
+    STATUS_CHOICES = [
+        ('new', 'New'),
+        ('reviewing', 'Reviewing'),
+        ('contacted', 'Contacted'),
+        ('closed', 'Closed'),
+    ]
+
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    company = models.CharField(max_length=150, blank=True)
+    project_type = models.CharField(max_length=100, blank=True, choices=PROJECT_TYPE_CHOICES)
+    budget = models.CharField(max_length=100, blank=True, choices=BUDGET_CHOICES)
+    timeline = models.CharField(max_length=100, blank=True, choices=TIMELINE_CHOICES)
+    project_details = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Hire Me Inquiry'
+        verbose_name_plural = 'Hire Me Inquiries'
+
+    def __str__(self):
+        return f'{self.name} - {self.project_type or "Project inquiry"}'
+
+
+class SupportSettings(models.Model):
+    title = models.CharField(max_length=100, default='Support the work')
+    suggested_amounts = models.JSONField(
+        default=default_support_amounts,
+        help_text='JSON list of suggested whole-number amounts in naira, for example [2000, 5000, 10000, 20000].',
+    )
+    is_active = models.BooleanField(default=True)
+    paystack_secret_encrypted = models.TextField(blank=True, editable=False)
+
+    class Meta:
+        verbose_name = 'Paystack & Support Settings'
+        verbose_name_plural = 'Paystack & Support Settings'
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def has_paystack_secret(self):
+        return bool(
+            self.paystack_secret_encrypted
+            and settings.PAYSTACK_CREDENTIALS_ENCRYPTION_KEY
+        )
+
+    def set_paystack_secret(self, secret):
+        self.paystack_secret_encrypted = (
+            _paystack_cipher().encrypt(secret.encode()).decode() if secret else ''
+        )
+
+    def get_paystack_secret(self):
+        if not self.paystack_secret_encrypted:
+            return ''
+        try:
+            return _paystack_cipher().decrypt(
+                self.paystack_secret_encrypted.encode()
+            ).decode()
+        except (InvalidToken, UnicodeDecodeError) as exc:
+            raise ValidationError(
+                'The saved Paystack secret could not be decrypted. '
+                'Check that DJANGO_SECRET_KEY has not changed.'
+            ) from exc
+
+    def clean(self):
+        super().clean()
+        amounts = self.suggested_amounts
+        if (
+            not isinstance(amounts, list)
+            or not amounts
+            or any(type(amount) is not int or amount < 100 or amount > 5_000_000 for amount in amounts)
+        ):
+            raise ValidationError({
+                'suggested_amounts': (
+                    'Enter a JSON list of whole-number amounts between 100 and 5,000,000.'
+                )
+            })

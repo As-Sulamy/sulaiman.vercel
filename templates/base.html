@@ -1,9 +1,15 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (localStorage.getItem('portfolio-theme') === 'light') {
+            document.documentElement.classList.replace('theme-dark', 'theme-light');
+        }
+    </script>
     {% block extra_meta %}{% endblock %}
     <title>{% block title %}{% if profile.seo_title %}{{ profile.seo_title }}{% else %}Portfolio{% endif %}{% endblock %}</title>
     <meta name="description" content="{% if profile.seo_description %}{{ profile.seo_description }}{% endif %}">
@@ -53,6 +59,304 @@
         ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #64748b; }
     </style>
+    <style>
+        html.theme-dark { color-scheme: dark; }
+        html.theme-light {
+            color-scheme: light;
+            background: #f5f8fc;
+        }
+        html.theme-light body {
+            background-color: #f5f8fc;
+            color: #17243a;
+            transition: background-color 250ms ease, color 250ms ease;
+        }
+        html.theme-light .bg-slate-900 { background-color: #eef3f9; }
+        html.theme-light [class~="bg-slate-900/80"] { background-color: rgba(255, 255, 255, 0.9); }
+        html.theme-light .bg-slate-800 { background-color: #ffffff; }
+        html.theme-light [class~="bg-slate-800/90"] { background-color: rgba(255, 255, 255, 0.96); }
+        html.theme-light [class~="bg-slate-800/50"] { background-color: #ffffff; }
+        html.theme-light .support-strip { background-color: #ffffff; }
+        html.theme-light section[class~="bg-slate-800/50"] { background-color: #edf3f9; }
+        html.theme-light [class~="bg-slate-800/30"] { background-color: #edf3f9; }
+        html.theme-light .bg-slate-700 { background-color: #e8eef6; }
+        html.theme-light [class~="bg-slate-600"] { background-color: #dce5ef; }
+        html.theme-light .border-slate-800,
+        html.theme-light .border-slate-700 { border-color: #dce5ef; }
+        html.theme-light [class~="border-t"][class~="border-slate-800"] { border-color: #dce5ef; }
+        html.theme-light .text-slate-100 { color: #17243a; }
+        html.theme-light .text-slate-300 { color: #34445c; }
+        html.theme-light .text-slate-400 { color: #52647b; }
+        html.theme-light .text-slate-500,
+        html.theme-light .text-slate-600 { color: #64748b; }
+        html.theme-light .text-sky-400 { color: #0369a1; }
+        html.theme-light .text-emerald-400 { color: #047857; }
+        html.theme-light [class~="hover:text-sky-400"]:hover { color: #075985; }
+        html.theme-light [class~="hover:text-sky-300"]:hover { color: #0369a1; }
+        html.theme-light [class~="hover:text-emerald-400"]:hover { color: #065f46; }
+        html.theme-light [class~="hover:text-emerald-300"]:hover { color: #047857; }
+        html.theme-light [class~="group-hover:text-sky-400"]:hover,
+        html.theme-light .group:hover [class~="group-hover:text-sky-400"] { color: #0369a1; }
+        html.theme-light [class~="group-hover:text-emerald-400"]:hover,
+        html.theme-light .group:hover [class~="group-hover:text-emerald-400"] { color: #047857; }
+        html.theme-light [class~="hover:bg-slate-700"]:hover { background-color: #dce5ef; }
+        html.theme-light [class~="hover:bg-slate-600"]:hover { background-color: #d4dfeb; }
+        html.theme-light [class~="from-slate-900"] {
+            --tw-gradient-from: #f8fbff var(--tw-gradient-from-position);
+            --tw-gradient-to: rgb(248 251 255 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+        }
+        html.theme-light [class~="via-slate-800"] {
+            --tw-gradient-via: #edf4fb var(--tw-gradient-via-position);
+            --tw-gradient-to: rgb(237 244 251 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to);
+        }
+        html.theme-light [class~="to-slate-900"] { --tw-gradient-to: #f8fbff var(--tw-gradient-to-position); }
+        html.theme-light [class~="from-slate-700"] {
+            --tw-gradient-from: #e8eef6 var(--tw-gradient-from-position);
+            --tw-gradient-to: rgb(232 238 246 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+        }
+        html.theme-light [class~="to-slate-800"] { --tw-gradient-to: #f8fbff var(--tw-gradient-to-position); }
+        html.theme-light [class~="from-sky-500"] {
+            --tw-gradient-from: #0369a1 var(--tw-gradient-from-position);
+            --tw-gradient-to: rgb(3 105 161 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+        }
+        html.theme-light [class~="to-emerald-500"] { --tw-gradient-to: #047857 var(--tw-gradient-to-position); }
+        html.theme-light .gradient-text {
+            background-image: linear-gradient(135deg, #0369a1, #047857);
+        }
+        html.theme-light .card-hover {
+            box-shadow: 0 12px 32px rgba(31, 55, 85, 0.06);
+        }
+        html.theme-light .card-hover:hover {
+            box-shadow: 0 22px 48px rgba(31, 55, 85, 0.12);
+        }
+        html.theme-light .tech-pill {
+            color: #23364e;
+            background: #ffffff;
+            border-color: #dce5ef;
+            box-shadow: 0 8px 24px rgba(31, 55, 85, 0.06);
+        }
+        html.theme-light .support-amount-button[aria-pressed="true"] {
+            color: #075985;
+            background: #e0f2fe;
+            border-color: #0284c7;
+        }
+        .support-amount-button[aria-pressed="true"] {
+            color: #e0f2fe;
+            background: rgba(14, 165, 233, 0.14);
+            border-color: #38bdf8;
+        }
+        .tech-marquee {
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+        }
+        .tech-marquee-track {
+            display: flex;
+            width: max-content;
+            animation: tech-marquee-scroll 32s linear infinite;
+        }
+        .tech-marquee-group {
+            display: flex;
+            flex: 0 0 auto;
+            align-items: center;
+            gap: 1rem;
+            padding-right: 1rem;
+        }
+        .tech-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            white-space: nowrap;
+            padding: 1rem 1.5rem;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            background: #1e293b;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+        .tech-marquee:hover .tech-marquee-track,
+        .tech-marquee:focus-within .tech-marquee-track { animation-play-state: paused; }
+        @keyframes tech-marquee-scroll {
+            to { transform: translateX(-50%); }
+        }
+        .inspiration-tree-trunk {
+            width: 3px;
+            height: 2rem;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, rgba(56, 189, 248, 0.8), rgba(16, 185, 129, 0.8));
+            transform-origin: top;
+            animation: tree-trunk-grow 650ms ease-out 250ms backwards;
+        }
+        .inspiration-tree-branches {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+            gap: 2.5rem 1.5rem;
+            padding-top: 2rem;
+        }
+        .inspiration-tree-branches::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 12.5%;
+            right: 12.5%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.8), rgba(16, 185, 129, 0.8));
+            transform-origin: center;
+            animation: tree-branch-grow 500ms ease-out 750ms backwards;
+        }
+        .inspiration-tree-node {
+            position: relative;
+            animation: tree-node-appear 500ms ease-out backwards;
+        }
+        .inspiration-tree-root-node { animation-delay: 80ms; }
+        .inspiration-tree-node:not(.inspiration-tree-root-node) { animation-delay: var(--tree-node-delay, 1300ms); }
+        .inspiration-tree-node:not(.inspiration-tree-root-node)::before {
+            content: "";
+            position: absolute;
+            top: -2rem;
+            left: 50%;
+            height: 2rem;
+            width: 2px;
+            background: linear-gradient(to bottom, rgba(56, 189, 248, 0.8), rgba(16, 185, 129, 0.8));
+            transform-origin: top;
+            animation: tree-twig-grow 350ms ease-out 900ms backwards;
+        }
+        .inspiration-tree-empty-branches {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0;
+            min-height: 5rem;
+        }
+        .inspiration-tree-empty-leaf {
+            position: relative;
+            justify-self: center;
+            width: 2rem;
+            height: 1.1rem;
+            margin-top: 0.4rem;
+            border-radius: 100% 0 100% 0;
+            background: linear-gradient(135deg, #38bdf8, #10b981);
+            animation: tree-leaf-appear 450ms ease-out var(--tree-node-delay, 1300ms) backwards;
+        }
+        .inspiration-tree-empty-leaf::before {
+            content: "";
+            position: absolute;
+            top: -2.4rem;
+            left: 50%;
+            width: 2px;
+            height: 2rem;
+            background: linear-gradient(to bottom, rgba(56, 189, 248, 0.8), rgba(16, 185, 129, 0.8));
+            transform-origin: top;
+            animation: tree-twig-grow 350ms ease-out 900ms backwards;
+        }
+        .inspiration-tree-node:hover,
+        .inspiration-tree-node:focus-visible { transform: translateY(-4px); }
+        @keyframes tree-trunk-grow {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+        @keyframes tree-branch-grow {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+        @keyframes tree-twig-grow {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+        @keyframes tree-node-appear {
+            from { opacity: 0; transform: translateY(12px) scale(0.94); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes tree-leaf-appear {
+            from { opacity: 0; transform: scale(0.3) rotate(-30deg); }
+            to { opacity: 1; transform: scale(1) rotate(-30deg); }
+        }
+        .support-dialog {
+            width: min(28.75rem, calc(100vw - 2rem));
+            max-width: none;
+            max-height: calc(100vh - 2rem);
+            margin: auto;
+            padding: 0;
+            overflow: visible;
+            border: 0;
+            background: transparent;
+        }
+        .support-dialog::backdrop {
+            background: rgba(15, 23, 42, 0.42);
+            backdrop-filter: blur(3px);
+        }
+        .support-dialog-panel {
+            max-height: calc(100vh - 2rem);
+            overflow-y: auto;
+            border-radius: 1.15rem;
+            background: #fff;
+            color: #1f2937;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+        }
+        .support-dialog input {
+            color: #1f2937 !important;
+            background: #f3f4f6 !important;
+            border-color: transparent !important;
+        }
+        .support-dialog input:focus { border-color: #0284c7 !important; }
+        .support-amount-button[aria-pressed="true"] {
+            color: #075985;
+            background: #e0f2fe;
+            border-color: #7dd3fc;
+        }
+        html.theme-light .support-amount-button[aria-pressed="true"] {
+            color: #075985;
+            background: #e0f2fe;
+            border-color: #7dd3fc;
+        }
+        @media (max-width: 640px) {
+            .inspiration-tree-branches::before { left: 20%; right: 20%; }
+        }
+        html.theme-light input,
+        html.theme-light textarea,
+        html.theme-light select {
+            color: #17243a;
+            background-color: #ffffff;
+            border-color: #cbd5e1;
+        }
+        html.theme-light input::placeholder,
+        html.theme-light textarea::placeholder { color: #64748b; }
+        html.theme-light input:focus,
+        html.theme-light textarea:focus,
+        html.theme-light select:focus { border-color: #0284c7; }
+        html.theme-light .prose-invert {
+            --tw-prose-body: #42526a;
+            --tw-prose-headings: #17243a;
+            --tw-prose-lead: #52647b;
+            --tw-prose-links: #0369a1;
+            --tw-prose-bold: #17243a;
+            --tw-prose-counters: #64748b;
+            --tw-prose-bullets: #94a3b8;
+            --tw-prose-hr: #dce5ef;
+            --tw-prose-quotes: #17243a;
+            --tw-prose-quote-borders: #cbd5e1;
+            --tw-prose-captions: #64748b;
+            --tw-prose-code: #17243a;
+            --tw-prose-pre-code: #e2e8f0;
+            --tw-prose-pre-bg: #1e293b;
+            --tw-prose-th-borders: #cbd5e1;
+            --tw-prose-td-borders: #dce5ef;
+        }
+        html.theme-light ::-webkit-scrollbar-track { background: #edf2f7; }
+        html.theme-light ::-webkit-scrollbar-thumb { background: #cbd5e1; }
+        html.theme-light ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        @media (prefers-reduced-motion: reduce) {
+            html.theme-light body { transition: none; }
+            .tech-marquee-track { animation: none; }
+            .inspiration-tree-trunk,
+            .inspiration-tree-branches::before,
+            .inspiration-tree-node,
+            .inspiration-tree-node::before,
+            .inspiration-tree-empty-leaf,
+            .inspiration-tree-empty-leaf::before { animation: none; }
+        }
+    </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body class="text-slate-100 antialiased">
@@ -60,31 +364,42 @@
     <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 nav-blur border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <a href="{% url 'home' %}" class="text-2xl font-bold gradient-text">
+                <a href="{% url 'home' %}" class="text-xl sm:text-2xl font-bold gradient-text whitespace-nowrap">
                     <i class="fas fa-code mr-2"></i>{{ profile.name|default:"Portfolio" }}
                 </a>
-                <div class="hidden md:flex items-center space-x-8">
+                <div class="hidden xl:flex items-center space-x-4">
                     <a href="{% url 'home' %}" class="text-slate-300 hover:text-sky-400 transition-colors">Home</a>
                     <a href="{% url 'project_list' %}" class="text-slate-300 hover:text-sky-400 transition-colors">Projects</a>
                     <a href="{% url 'blog_list' %}" class="text-slate-300 hover:text-sky-400 transition-colors">Blog</a>
                     <a href="{% url 'about' %}" class="text-slate-300 hover:text-sky-400 transition-colors">About</a>
                     <a href="{% url 'services' %}" class="text-slate-300 hover:text-sky-400 transition-colors">Services</a>
-                    <a href="{% url 'contact' %}" class="px-4 py-2 bg-gradient-to-r from-sky-500 to-emerald-500 text-white rounded-lg font-semibold hover:opacity-90 transition-opacity">Contact</a>
+                    <a href="{% url 'inspiration' %}" class="text-slate-300 hover:text-sky-400 transition-colors">Inspiration</a>
+                    <a href="#support" data-support-open class="text-slate-300 hover:text-sky-400 transition-colors">Support Me</a>
+                    <a href="{% url 'contact' %}" class="text-slate-300 hover:text-sky-400 transition-colors">Contact</a>
+                    <a href="{% url 'hire_me' %}" class="px-4 py-2 bg-gradient-to-r from-sky-500 to-emerald-500 text-white rounded-full font-semibold hover:opacity-90 transition-opacity">Hire Me</a>
                 </div>
-                <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-sky-400">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
+                <div class="flex items-center gap-3">
+                    <button type="button" data-theme-toggle aria-label="Switch to light mode" title="Switch to light mode" aria-pressed="false" class="w-10 h-10 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 hover:text-sky-400 hover:bg-slate-700 transition-all">
+                        <i data-theme-icon class="fas fa-sun"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="xl:hidden text-slate-300 hover:text-sky-400" aria-label="Open navigation menu" aria-controls="mobile-menu" aria-expanded="false">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 border-t border-slate-700">
+        <div id="mobile-menu" class="hidden xl:hidden bg-slate-800 border-t border-slate-700">
             <div class="px-4 py-4 space-y-3">
                 <a href="{% url 'home' %}" class="block text-slate-300 hover:text-sky-400 py-2">Home</a>
                 <a href="{% url 'project_list' %}" class="block text-slate-300 hover:text-sky-400 py-2">Projects</a>
                 <a href="{% url 'blog_list' %}" class="block text-slate-300 hover:text-sky-400 py-2">Blog</a>
                 <a href="{% url 'about' %}" class="block text-slate-300 hover:text-sky-400 py-2">About</a>
                 <a href="{% url 'services' %}" class="block text-slate-300 hover:text-sky-400 py-2">Services</a>
-                <a href="{% url 'contact' %}" class="block text-sky-400 py-2 font-semibold">Contact</a>
+                <a href="{% url 'inspiration' %}" class="block text-slate-300 hover:text-sky-400 py-2">Inspiration</a>
+                <a href="#support" data-support-open class="block text-slate-300 hover:text-sky-400 py-2">Support Me</a>
+                <a href="{% url 'contact' %}" class="block text-slate-300 hover:text-sky-400 py-2">Contact</a>
+                <a href="{% url 'hire_me' %}" class="block text-sky-400 py-2 font-semibold">Hire Me</a>
             </div>
         </div>
     </nav>
@@ -93,6 +408,78 @@
     <main class="pt-16">
         {% block content %}{% endblock %}
     </main>
+
+    {% if support_settings.is_active %}
+    <section id="support" class="support-strip border-y border-slate-800 bg-slate-900/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <h2 class="font-semibold text-slate-100">{{ support_settings.title }}</h2>
+            <div class="flex flex-wrap items-center gap-2" aria-label="Choose a support amount">
+                {% for amount in support_settings.suggested_amounts %}
+                <button type="button" data-support-open-amount="{{ amount }}" class="support-strip-button px-4 py-2 rounded-full border border-slate-700 bg-slate-800 text-sm font-semibold text-slate-200 hover:border-sky-500 hover:text-sky-400 transition-colors">
+                    ₦{{ amount|intcomma }}
+                </button>
+                {% endfor %}
+                <button type="button" data-support-open-other class="px-4 py-2 text-sm font-semibold text-sky-400 hover:text-emerald-400">Other</button>
+            </div>
+        </div>
+    </section>
+
+    <dialog id="support-dialog" class="support-dialog" aria-labelledby="support-dialog-title">
+        <div class="support-dialog-panel p-5 sm:p-6">
+            <div class="flex items-center justify-between mb-5">
+                <h2 id="support-dialog-title" class="text-lg font-semibold text-slate-900">Support {{ profile.name|default:"my work" }}</h2>
+                <button type="button" data-support-close aria-label="Close support window" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200">×</button>
+            </div>
+            {% if messages %}
+            <div id="support-feedback" class="space-y-2 mb-4">
+                {% for message in messages %}
+                {% if 'support' in message.tags %}
+                <p class="p-3 rounded-lg text-sm {% if message.level_tag == 'success' %}bg-emerald-50 text-emerald-800{% else %}bg-red-50 text-red-800{% endif %}" role="{% if message.level_tag == 'success' %}status{% else %}alert{% endif %}">{{ message }}</p>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            <form method="post" action="{% url 'support_start' %}" class="space-y-3">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <div class="rounded-2xl bg-gray-100 p-3">
+                    <label for="support-amount" class="flex items-center gap-2 text-xl font-semibold text-gray-900">
+                        <span aria-hidden="true">₦</span>{{ support_form.amount }}
+                    </label>
+                    <div class="mt-2 flex flex-wrap gap-1.5" role="group" aria-label="Suggested support amounts">
+                        {% for amount in support_settings.suggested_amounts %}
+                        <button type="button" data-support-amount="{{ amount }}" aria-pressed="false" class="support-amount-button rounded-full border border-transparent bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:border-sky-300">
+                            ₦{{ amount|intcomma }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                    <p class="mt-2 text-xs text-gray-500">Choose an amount or enter any amount from ₦100.</p>
+                </div>
+                <div class="divide-y divide-gray-200 rounded-2xl bg-gray-100 px-3">
+                    <div class="py-2">
+                        <label for="id_support_email" class="sr-only">Email for your receipt</label>
+                        {{ support_form.email }}
+                    </div>
+                    <div class="py-2">
+                        <label for="id_support_name" class="sr-only">Your name (optional)</label>
+                        {{ support_form.name }}
+                    </div>
+                </div>
+                {% if paystack_enabled %}
+                <button type="submit" class="w-full rounded-full bg-gradient-to-r from-sky-600 to-emerald-600 py-3.5 text-sm font-semibold text-white hover:from-sky-700 hover:to-emerald-700 transition-colors">
+                    Support with ₦<span data-support-submit-amount>{{ support_default_amount|intcomma }}</span>
+                </button>
+                <p class="text-center text-xs text-gray-500">Secure checkout powered by Paystack.</p>
+                {% else %}
+                <button type="button" disabled class="w-full rounded-full bg-gray-300 py-3.5 text-sm font-semibold text-gray-600 cursor-not-allowed">
+                    Paystack checkout is not configured
+                </button>
+                <p class="text-center text-xs text-gray-500">Add your Paystack secret key under Paystack &amp; Support Settings in Admin.</p>
+                {% endif %}
+            </form>
+        </div>
+    </dialog>
+    {% endif %}
 
     <!-- Footer -->
     <footer class="bg-slate-900 border-t border-slate-800">
@@ -123,7 +510,10 @@
                         <li><a href="{% url 'blog_list' %}" class="text-slate-400 hover:text-sky-400 transition-colors">Blog</a></li>
                         <li><a href="{% url 'about' %}" class="text-slate-400 hover:text-sky-400 transition-colors">About</a></li>
                         <li><a href="{% url 'services' %}" class="text-slate-400 hover:text-sky-400 transition-colors">Services</a></li>
+                        <li><a href="{% url 'inspiration' %}" class="text-slate-400 hover:text-sky-400 transition-colors">Inspiration</a></li>
+                        <li><a href="#support" data-support-open class="text-slate-400 hover:text-sky-400 transition-colors">Support Me</a></li>
                         <li><a href="{% url 'contact' %}" class="text-slate-400 hover:text-sky-400 transition-colors">Contact</a></li>
+                        <li><a href="{% url 'hire_me' %}" class="text-slate-400 hover:text-sky-400 transition-colors">Hire Me</a></li>
                     </ul>
                 </div>
                 <div>
@@ -153,7 +543,89 @@
         
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
+            const menuIsOpen = !mobileMenu.classList.contains('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', String(menuIsOpen));
+            mobileMenuBtn.setAttribute('aria-label', menuIsOpen ? 'Close navigation menu' : 'Open navigation menu');
         });
+
+        const themeToggles = document.querySelectorAll('[data-theme-toggle]');
+        const root = document.documentElement;
+
+        function updateThemeButton(isLight) {
+            themeToggles.forEach((button) => {
+                const label = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+                button.setAttribute('aria-label', label);
+                button.setAttribute('aria-pressed', String(isLight));
+                button.title = label;
+                button.querySelector('[data-theme-icon]').className = `fas ${isLight ? 'fa-moon' : 'fa-sun'}`;
+            });
+        }
+
+        updateThemeButton(root.classList.contains('theme-light'));
+        themeToggles.forEach((button) => {
+            button.addEventListener('click', () => {
+                const isLight = !root.classList.contains('theme-light');
+                root.classList.toggle('theme-light', isLight);
+                root.classList.toggle('theme-dark', !isLight);
+                localStorage.setItem('portfolio-theme', isLight ? 'light' : 'dark');
+                updateThemeButton(isLight);
+            });
+        });
+
+        const supportDialog = document.getElementById('support-dialog');
+        const supportAmountInput = document.getElementById('support-amount');
+        const supportSubmitAmount = document.querySelector('[data-support-submit-amount]');
+        const supportAmountButtons = document.querySelectorAll('[data-support-amount]');
+
+        function updateSupportAmount() {
+            if (!supportAmountInput) return;
+            const amount = Number.parseInt(supportAmountInput.value, 10);
+            if (supportSubmitAmount) {
+                supportSubmitAmount.textContent = Number.isFinite(amount) && amount > 0
+                    ? amount.toLocaleString('en-US')
+                    : '0';
+            }
+            supportAmountButtons.forEach((button) => {
+                button.setAttribute('aria-pressed', String(button.dataset.supportAmount === supportAmountInput.value));
+            });
+        }
+
+        function openSupportDialog(amount, isOther) {
+            if (!supportDialog) return;
+            if (supportAmountInput && amount) supportAmountInput.value = amount;
+            if (supportAmountInput && isOther) supportAmountInput.value = '';
+            updateSupportAmount();
+            if (!supportDialog.open) supportDialog.showModal();
+            if (isOther) supportAmountInput.focus();
+        }
+
+        document.querySelectorAll('[data-support-open]').forEach((link) => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                openSupportDialog();
+            });
+        });
+        document.querySelectorAll('[data-support-open-amount]').forEach((button) => {
+            button.addEventListener('click', () => openSupportDialog(button.dataset.supportOpenAmount, false));
+        });
+        document.querySelectorAll('[data-support-open-other]').forEach((button) => {
+            button.addEventListener('click', () => openSupportDialog('', true));
+        });
+        supportAmountButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                supportAmountInput.value = button.dataset.supportAmount;
+                updateSupportAmount();
+            });
+        });
+        supportAmountInput?.addEventListener('input', updateSupportAmount);
+        document.querySelector('[data-support-close]')?.addEventListener('click', () => supportDialog.close());
+        supportDialog?.addEventListener('click', (event) => {
+            if (event.target === supportDialog) supportDialog.close();
+        });
+        updateSupportAmount();
+        if (document.querySelector('#support-feedback [role="status"], #support-feedback [role="alert"]')) {
+            supportDialog?.showModal();
+        }
     </script>
     {% block extra_js %}{% endblock %}
 </body>

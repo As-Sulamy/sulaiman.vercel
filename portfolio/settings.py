@@ -4,12 +4,16 @@ Django settings for portfolio project.
 
 from pathlib import Path
 import os
+from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-(h#%ts+%xr1oufpuj(rtrw5g+$7a#x@lmxcu=jyhuap@dd+qp*'
-
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() == 'true' and not os.environ.get('VERCEL')
+DJANGO_SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '').strip()
+if not DEBUG and not DJANGO_SECRET_KEY:
+    raise ImproperlyConfigured('Set DJANGO_SECRET_KEY in production.')
+SECRET_KEY = DJANGO_SECRET_KEY or 'local-development-only-secret-key'
+PAYSTACK_CREDENTIALS_ENCRYPTION_KEY = DJANGO_SECRET_KEY
 
 ALLOWED_HOSTS = ['*', '.vercel.app', '127.0.0.1', '.now.sh']
 
@@ -20,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'markdownx',
     'projects',
 ]
@@ -92,6 +97,8 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+PAYSTACK_SECRET_KEY = os.environ.get('PAYSTACK_SECRET_KEY', '').strip()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Inspiration | {{ profile.name|default:"Portfolio" }}{% endblock %}
+
+{% block content %}
+<section class="min-h-[70vh] py-16 sm:py-20">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <header class="mx-auto mb-14 max-w-3xl text-center">
+            <p class="mb-3 font-semibold text-emerald-400">People &amp; Ideas</p>
+            <h1 class="mb-5 text-4xl font-bold text-slate-100 sm:text-6xl">My inspiration tree</h1>
+            <p class="text-lg text-slate-400">The people and ideas that shape my journey. Select a person to learn more about them.</p>
+        </header>
+
+        <div class="inspiration-tree mx-auto max-w-5xl">
+            <div class="flex justify-center">
+                <button type="button" data-tree-detail="my-profile-details" class="inspiration-tree-node inspiration-tree-root-node card-hover w-64 rounded-2xl border border-sky-500/40 bg-slate-800 px-6 py-5 text-center shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-400">
+                    {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" alt="" class="mx-auto mb-3 h-20 w-20 rounded-full border-2 border-sky-400 object-cover">
+                    {% else %}
+                    <span class="mx-auto mb-3 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-emerald-500 text-2xl font-bold text-white" aria-hidden="true">{{ profile.name|default:"Me"|slice:":1"|upper }}</span>
+                    {% endif %}
+                    <span class="block font-bold text-slate-100">{{ profile.name|default:"My Journey" }}</span>
+                    <span class="mt-1 block text-sm text-slate-400">{{ profile.title|default:"Always learning" }}</span>
+                    <span class="mt-3 inline-block text-xs font-semibold text-sky-400">View my story</span>
+                </button>
+            </div>
+
+            <div class="inspiration-tree-trunk" aria-hidden="true"></div>
+            {% if inspirations %}
+            <div class="inspiration-tree-branches">
+                {% for inspiration in inspirations %}
+                <button type="button" data-tree-detail="inspiration-details-{{ inspiration.pk }}" style="--tree-node-delay: {{ forloop.counter|add:12 }}00ms" class="inspiration-tree-node card-hover rounded-2xl border border-slate-700 bg-slate-800/90 p-5 text-center shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-400">
+                    {% if inspiration.image %}
+                    <img src="{{ inspiration.image.url }}" alt="" class="mx-auto mb-3 h-16 w-16 rounded-full border-2 border-slate-600 object-cover">
+                    {% else %}
+                    <span class="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-emerald-500 text-xl font-bold text-white" aria-hidden="true">{{ inspiration.name|slice:":1"|upper }}</span>
+                    {% endif %}
+                    <span class="block font-semibold text-slate-100">{{ inspiration.name }}</span>
+                    {% if inspiration.role %}<span class="mt-1 block text-sm text-slate-400">{{ inspiration.role }}</span>{% endif %}
+                    <span class="mt-3 inline-block text-xs font-semibold text-sky-400">View their story</span>
+                </button>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="inspiration-tree-branches inspiration-tree-empty-branches" aria-hidden="true">
+                <span class="inspiration-tree-empty-leaf" style="--tree-node-delay: 1300ms"></span>
+                <span class="inspiration-tree-empty-leaf" style="--tree-node-delay: 1450ms"></span>
+                <span class="inspiration-tree-empty-leaf" style="--tree-node-delay: 1600ms"></span>
+            </div>
+            <div class="mx-auto max-w-lg rounded-2xl border border-dashed border-slate-700 bg-slate-800/50 p-6 text-center">
+                <i class="fas fa-seedling mb-3 text-2xl text-emerald-400" aria-hidden="true"></i>
+                <h2 class="font-semibold text-slate-100">Your tree is ready to grow</h2>
+                <p class="mt-2 text-sm text-slate-400">Add people who inspire you in Django Admin under Inspirations.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<dialog id="inspiration-detail-dialog" class="support-dialog" aria-labelledby="inspiration-detail-title">
+    <div class="support-dialog-panel p-6 sm:p-8">
+        <div class="flex justify-end">
+            <button type="button" data-tree-close aria-label="Close details" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200">×</button>
+        </div>
+        <div id="inspiration-detail-content"></div>
+    </div>
+</dialog>
+
+<template id="my-profile-details">
+    <div class="text-center">
+        {% if profile.about_image %}
+        <img src="{{ profile.about_image.url }}" alt="{{ profile.name }}" class="mx-auto mb-5 h-24 w-24 rounded-full object-cover">
+        {% elif profile.profile_image %}
+        <img src="{{ profile.profile_image.url }}" alt="{{ profile.name }}" class="mx-auto mb-5 h-24 w-24 rounded-full object-cover">
+        {% endif %}
+        <p class="mb-2 text-sm font-semibold uppercase tracking-wide text-sky-700">About me</p>
+        <h2 id="inspiration-detail-title" class="text-2xl font-bold text-slate-900">{{ profile.about_title|default:profile.name }}</h2>
+        <p class="mt-2 text-gray-600">{{ profile.about_subtitle|default:profile.title }}</p>
+        <p class="mt-5 whitespace-pre-line text-left leading-relaxed text-gray-700">{{ profile.about_content|default:"Add your About title, subtitle, content, and photo in Django Admin under Profile to fill in this story." }}</p>
+        <div class="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-gray-600">
+            {% if profile.location %}<span><i class="fas fa-location-dot mr-1 text-sky-700" aria-hidden="true"></i>{{ profile.location }}</span>{% endif %}
+            {% if profile.email %}<a href="mailto:{{ profile.email }}" class="hover:text-sky-900"><i class="fas fa-envelope mr-1 text-sky-700" aria-hidden="true"></i>{{ profile.email }}</a>{% endif %}
+            {% if profile.website %}<a href="{{ profile.website }}" target="_blank" rel="noopener noreferrer" class="font-semibold text-sky-700 hover:text-sky-900">Website <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>{% endif %}
+        </div>
+    </div>
+</template>
+
+{% for inspiration in inspirations %}
+<template id="inspiration-details-{{ inspiration.pk }}">
+    <div class="text-center">
+        {% if inspiration.image %}<img src="{{ inspiration.image.url }}" alt="{{ inspiration.name }}" class="mx-auto mb-5 h-24 w-24 rounded-full object-cover">{% endif %}
+        <p class="mb-2 text-sm font-semibold uppercase tracking-wide text-sky-700">Someone who inspires me</p>
+        <h2 id="inspiration-detail-title" class="text-2xl font-bold text-slate-900">{{ inspiration.name }}</h2>
+        {% if inspiration.role %}<p class="mt-2 text-gray-600">{{ inspiration.role }}</p>{% endif %}
+        <p class="mt-5 whitespace-pre-line text-left leading-relaxed text-gray-700">{{ inspiration.description|default:"Add a short story about this person in Django Admin under Inspirations." }}</p>
+        {% if inspiration.link %}<a href="{{ inspiration.link }}" target="_blank" rel="noopener noreferrer" class="mt-5 inline-flex items-center gap-2 font-semibold text-sky-700 hover:text-sky-900">Explore their work <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>{% endif %}
+    </div>
+</template>
+{% endfor %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const inspirationDialog = document.getElementById('inspiration-detail-dialog');
+    const inspirationContent = document.getElementById('inspiration-detail-content');
+
+    document.querySelectorAll('[data-tree-detail]').forEach((node) => {
+        node.addEventListener('click', () => {
+            const detailTemplate = document.getElementById(node.dataset.treeDetail);
+            if (!detailTemplate || !inspirationDialog || !inspirationContent) return;
+            inspirationContent.replaceChildren(detailTemplate.content.cloneNode(true));
+            inspirationDialog.showModal();
+        });
+    });
+
+    document.querySelector('[data-tree-close]')?.addEventListener('click', () => inspirationDialog.close());
+    inspirationDialog?.addEventListener('click', (event) => {
+        if (event.target === inspirationDialog) inspirationDialog.close();
+    });
+</script>
+{% endblock %}

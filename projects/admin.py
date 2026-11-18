@@ -1,8 +1,13 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
+from django.conf import settings
 from django.utils.html import format_html
 from django.utils import timezone
-from .models import Project, Blog, Contact, SocialLink, Skill, Experience, Education, Profile, Service
+from .forms import SupportSettingsForm
+from .models import (
+    Blog, Contact, Education, Experience, HireRequest, Inspiration, Profile,
+    Project, Service, Skill, SocialLink, SupportSettings,
+)
 
 
 def ensure_default_blogs():
@@ -303,6 +308,48 @@ class ContactAdmin(admin.ModelAdmin):
         return super().change_view(request, object_id, form_url, extra_context)
 
 
+@admin.register(HireRequest, site=admin_site)
+class HireRequestAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'project_type_display', 'status', 'created_at']
+    list_filter = ['status', 'project_type', 'created_at']
+    list_editable = ['status']
+    search_fields = ['name', 'email', 'company', 'project_details']
+    readonly_fields = ['name', 'email', 'company', 'project_type', 'budget', 'timeline', 'project_details', 'created_at']
+    ordering = ['-created_at']
+
+    def has_add_permission(self, request):
+        return False
+
+    @admin.display(description='Service')
+    def project_type_display(self, obj):
+        return obj.get_project_type_display() or 'Not specified'
+
+
+@admin.register(SupportSettings, site=admin_site)
+class SupportSettingsAdmin(admin.ModelAdmin):
+    form = SupportSettingsForm
+    list_display = ['title', 'is_active', 'paystack_configured']
+    fieldsets = (
+        ('Support bar', {
+            'fields': ('title', 'suggested_amounts', 'is_active'),
+        }),
+        ('Paystack credentials', {
+            'fields': ('paystack_secret_key', 'clear_paystack_secret'),
+            'description': 'Enter the server-side secret key. It is encrypted using DJANGO_SECRET_KEY before being saved.',
+        }),
+    )
+
+    def has_add_permission(self, request):
+        return not SupportSettings.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    @admin.display(boolean=True, description='Paystack configured')
+    def paystack_configured(self, obj):
+        return obj.is_active and bool(settings.PAYSTACK_SECRET_KEY or obj.has_paystack_secret)
+
+
 @admin.register(Profile, site=admin_site)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ['name', 'title', 'email']
@@ -318,7 +365,8 @@ class ProfileAdmin(admin.ModelAdmin):
             'fields': ('email', 'phone', 'location', 'website')
         }),
         ('About Section', {
-            'fields': ('about_title', 'about_subtitle', 'about_content', 'about_image')
+            'fields': ('about_title', 'about_subtitle', 'about_content', 'about_image'),
+            'description': 'These details appear when visitors select your node in the Inspiration tree.',
         }),
         ('Hero Stats', {
             'fields': ('hero_stats',),
@@ -456,6 +504,14 @@ class ExperienceAdmin(admin.ModelAdmin):
             return format_html('<span class="text-slate-400">{} - {}</span>', obj.start_date.strftime("%b %Y"), obj.end_date.strftime("%b %Y"))
         return obj.start_date.strftime("%b %Y")
     display_dates.short_description = 'Duration'
+
+
+@admin.register(Inspiration, site=admin_site)
+class InspirationAdmin(admin.ModelAdmin):
+    list_display = ['name', 'role', 'order', 'is_active']
+    list_filter = ['is_active']
+    list_editable = ['order', 'is_active']
+    search_fields = ['name', 'role', 'description']
 
 
 @admin.register(Education, site=admin_site)

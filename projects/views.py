@@ -1,13 +1,26 @@
+import logging
+import re
+import requests
+
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.contrib import messages
+from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Project, Blog, Contact, Profile, SocialLink, Skill, Experience, Education, Service
-from .forms import ContactForm
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.http import require_GET, require_POST
+from .models import (
+    Blog, Contact, Education, Experience, HireRequest, Inspiration, Profile,
+    Project, Service, Skill, SocialLink, SupportSettings,
+)
+from .forms import ContactForm, HireRequestForm, SupportForm
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_portfolio_context():
@@ -167,6 +180,127 @@ def get_default_blogs():
     ]
 
 
+def _configured_paystack_secret():
+    support_settings = SupportSettings.objects.first()
+    if support_settings and not support_settings.is_active:
+        return ''
+    if support_settings and support_settings.paystack_secret_encrypted:
+        try:
+            return support_settings.get_paystack_secret()
+        except (ImproperlyConfigured, ValidationError):
+            logger.exception('Could not decrypt Paystack credentials from Admin settings.')
+            return ''
+    return settings.PAYSTACK_SECRET_KEY
+
+
+def _support_redirect(request):
+    next_url = request.POST.get('next', '')
+    if not url_has_allowed_host_and_scheme(
+        next_url,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        next_url = reverse('home')
+    return HttpResponseRedirect(f'{next_url}#support')
+
+
+@require_POST
+def start_support_payment(request):
+    form = SupportForm(request.POST)
+    if not form.is_valid():
+        messages.error(request, 'Enter a valid email address and a support amount between ₦100 and ₦5,000,000.', extra_tags='support')
+        return _support_redirect(request)
+
+    secret_key = _configured_paystack_secret()
+    if not secret_key:
+        logger.error('Paystack support payment requested without valid credentials configured.')
+        messages.error(request, 'Online support payments are not available right now. Please try again later.', extra_tags='support')
+        return _support_redirect(request)
+
+    callback_url = request.build_absolute_uri(reverse('support_callback'))
+    payload = {
+        'email': form.cleaned_data['email'],
+        'amount': form.cleaned_data['amount'] * 100,
+        'currency': 'NGN',
+        'callback_url': callback_url,
+        'metadata': {
+            'name': form.cleaned_data['name'],
+            'purpose': 'Portfolio support',
+        },
+    }
+
+    try:
+        response = requests.post(
+            'https://api.paystack.co/transaction/initialize',
+            headers={'Authorization': f'Bearer {secret_key}'},
+            json=payload,
+            timeout=(3, 10),
+        )
+        response.raise_for_status()
+        result = response.json()
+    except (requests.RequestException, ValueError):
+        logger.exception('Could not initialize Paystack support transaction.')
+        messages.error(request, 'We could not start checkout. Please try again in a moment.', extra_tags='support')
+        return _support_redirect(request)
+
+    data = result.get('data') if isinstance(result, dict) else None
+    authorization_url = data.get('authorization_url') if isinstance(data, dict) else None
+    if not isinstance(result, dict) or result.get('status') is not True:
+        provider_message = result.get('message', 'Unexpected Paystack response') if isinstance(result, dict) else 'Unexpected Paystack response'
+        logger.warning('Paystack declined support transaction initialization: %s', provider_message)
+        messages.error(request, 'We could not start checkout. Please try again in a moment.', extra_tags='support')
+        return _support_redirect(request)
+    if not isinstance(authorization_url, str) or not authorization_url.startswith('https://'):
+        logger.error('Paystack initialization response did not contain a valid HTTPS checkout URL.')
+        messages.error(request, 'We could not start checkout. Please try again in a moment.', extra_tags='support')
+        return _support_redirect(request)
+
+    return HttpResponseRedirect(authorization_url)
+
+
+@require_GET
+def paystack_callback(request):
+    reference = request.GET.get('reference') or request.GET.get('trxref', '')
+    if not re.fullmatch(r'[A-Za-z0-9_-]{1,100}', reference):
+        messages.error(request, 'We could not verify that payment. Please contact me if you were charged.', extra_tags='support')
+        return HttpResponseRedirect(f'{reverse("home")}#support')
+
+    secret_key = _configured_paystack_secret()
+    if not secret_key:
+        logger.error('Paystack callback received without valid credentials configured.')
+        messages.error(request, 'We could not verify that payment. Please contact me if you were charged.', extra_tags='support')
+        return HttpResponseRedirect(f'{reverse("home")}#support')
+
+    try:
+        response = requests.get(
+            f'https://api.paystack.co/transaction/verify/{reference}',
+            headers={'Authorization': f'Bearer {secret_key}'},
+            timeout=(3, 10),
+        )
+        response.raise_for_status()
+        result = response.json()
+    except (requests.RequestException, ValueError):
+        logger.exception('Could not verify Paystack support transaction.')
+        messages.error(request, 'Payment verification is taking longer than expected. Please contact me if you were charged.', extra_tags='support')
+        return HttpResponseRedirect(f'{reverse("home")}#support')
+
+    data = result.get('data') if isinstance(result, dict) else None
+    if (
+        isinstance(result, dict)
+        and result.get('status') is True
+        and isinstance(data, dict)
+        and data.get('status') == 'success'
+        and data.get('currency') == 'NGN'
+    ):
+        messages.success(request, 'Thank you for supporting my work!', extra_tags='support')
+    else:
+        provider_message = result.get('message', 'Transaction was not successful') if isinstance(result, dict) else 'Unexpected Paystack response'
+        logger.warning('Paystack support transaction was not verified as successful: %s', provider_message)
+        messages.error(request, 'The payment was not confirmed. Please contact me if you were charged.', extra_tags='support')
+
+    return HttpResponseRedirect(f'{reverse("home")}#support')
+
+
 class HomeView(TemplateView):
     template_name = 'home.html'
     
@@ -179,6 +313,7 @@ class HomeView(TemplateView):
             blogs = get_default_blogs()[:3]
         context['blogs'] = blogs
         context['contact_form'] = ContactForm()
+        context['inspirations'] = Inspiration.objects.filter(is_active=True)[:3]
         return context
     
     def post(self, request, *args, **kwargs):
@@ -295,6 +430,26 @@ class ContactView(CreateView):
         return super().form_invalid(form)
 
 
+class HireMeView(CreateView):
+    model = HireRequest
+    form_class = HireRequestForm
+    template_name = 'hire_me.html'
+    success_url = reverse_lazy('hire_me')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_portfolio_context())
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your project inquiry has been sent. I will review it and get back to you.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Please check the project details and correct the highlighted fields.')
+        return super().form_invalid(form)
+
+
 class AboutView(TemplateView):
     template_name = 'about.html'
     
@@ -310,4 +465,14 @@ class ServicesView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_portfolio_context())
+        return context
+
+
+class InspirationView(TemplateView):
+    template_name = 'inspiration.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_portfolio_context())
+        context['inspirations'] = Inspiration.objects.filter(is_active=True)
         return context

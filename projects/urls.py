@@ -8,6 +8,10 @@ urlpatterns = [
     path('blog/', views.BlogListView.as_view(), name='blog_list'),
     path('blog/<slug:slug>/', views.BlogDetailView.as_view(), name='blog_detail'),
     path('contact/', views.ContactView.as_view(), name='contact'),
+    path('hire-me/', views.HireMeView.as_view(), name='hire_me'),
     path('about/', views.AboutView.as_view(), name='about'),
     path('services/', views.ServicesView.as_view(), name='services'),
+    path('inspiration/', views.InspirationView.as_view(), name='inspiration'),
+    path('support/start/', views.start_support_payment, name='support_start'),
+    path('support/callback/', views.paystack_callback, name='support_callback'),
 ]
