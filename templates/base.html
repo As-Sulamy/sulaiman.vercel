@@ -75,7 +75,6 @@
         html.theme-light .bg-slate-800 { background-color: #ffffff; }
         html.theme-light [class~="bg-slate-800/90"] { background-color: rgba(255, 255, 255, 0.96); }
         html.theme-light [class~="bg-slate-800/50"] { background-color: #ffffff; }
-        html.theme-light .support-strip { background-color: #ffffff; }
         html.theme-light section[class~="bg-slate-800/50"] { background-color: #edf3f9; }
         html.theme-light [class~="bg-slate-800/30"] { background-color: #edf3f9; }
         html.theme-light .bg-slate-700 { background-color: #e8eef6; }
@@ -212,7 +211,7 @@
             animation: tree-node-appear 500ms ease-out backwards;
         }
         .inspiration-tree-root-node { animation-delay: 80ms; }
-        .inspiration-tree-node:not(.inspiration-tree-root-node) { animation-delay: var(--tree-node-delay, 1300ms); }
+        .inspiration-tree-node:not(.inspiration-tree-root-node) { animation-delay: var(--tree-node-delay, 950ms); }
         .inspiration-tree-node:not(.inspiration-tree-root-node)::before {
             content: "";
             position: absolute;
@@ -222,33 +221,7 @@
             width: 2px;
             background: linear-gradient(to bottom, rgba(56, 189, 248, 0.8), rgba(16, 185, 129, 0.8));
             transform-origin: top;
-            animation: tree-twig-grow 350ms ease-out 900ms backwards;
-        }
-        .inspiration-tree-empty-branches {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 0;
-            min-height: 5rem;
-        }
-        .inspiration-tree-empty-leaf {
-            position: relative;
-            justify-self: center;
-            width: 2rem;
-            height: 1.1rem;
-            margin-top: 0.4rem;
-            border-radius: 100% 0 100% 0;
-            background: linear-gradient(135deg, #38bdf8, #10b981);
-            animation: tree-leaf-appear 450ms ease-out var(--tree-node-delay, 1300ms) backwards;
-        }
-        .inspiration-tree-empty-leaf::before {
-            content: "";
-            position: absolute;
-            top: -2.4rem;
-            left: 50%;
-            width: 2px;
-            height: 2rem;
-            background: linear-gradient(to bottom, rgba(56, 189, 248, 0.8), rgba(16, 185, 129, 0.8));
-            transform-origin: top;
-            animation: tree-twig-grow 350ms ease-out 900ms backwards;
+            animation: tree-twig-grow 350ms ease-out 850ms backwards;
         }
         .inspiration-tree-node:hover,
         .inspiration-tree-node:focus-visible { transform: translateY(-4px); }
@@ -267,10 +240,6 @@
         @keyframes tree-node-appear {
             from { opacity: 0; transform: translateY(12px) scale(0.94); }
             to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        @keyframes tree-leaf-appear {
-            from { opacity: 0; transform: scale(0.3) rotate(-30deg); }
-            to { opacity: 1; transform: scale(1) rotate(-30deg); }
         }
         .support-dialog {
             width: min(28.75rem, calc(100vw - 2rem));
@@ -352,9 +321,7 @@
             .inspiration-tree-trunk,
             .inspiration-tree-branches::before,
             .inspiration-tree-node,
-            .inspiration-tree-node::before,
-            .inspiration-tree-empty-leaf,
-            .inspiration-tree-empty-leaf::before { animation: none; }
+            .inspiration-tree-node::before { animation: none; }
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -376,7 +343,7 @@
                     <a href="{% url 'inspiration' %}" class="text-slate-300 hover:text-sky-400 transition-colors">Inspiration</a>
                     <a href="#support" data-support-open class="text-slate-300 hover:text-sky-400 transition-colors">Support Me</a>
                     <a href="{% url 'contact' %}" class="text-slate-300 hover:text-sky-400 transition-colors">Contact</a>
-                    <a href="{% url 'hire_me' %}" class="px-4 py-2 bg-gradient-to-r from-sky-500 to-emerald-500 text-white rounded-full font-semibold hover:opacity-90 transition-opacity">Hire Me</a>
+                    <a href="{% url 'hire_me' %}" class="px-4 py-2 bg-red-900 text-white rounded-full font-semibold hover:bg-red-800 transition-colors">Hire Me</a>
                 </div>
                 <div class="flex items-center gap-3">
                     <button type="button" data-theme-toggle aria-label="Switch to light mode" title="Switch to light mode" aria-pressed="false" class="w-10 h-10 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 hover:text-sky-400 hover:bg-slate-700 transition-all">
@@ -399,7 +366,7 @@
                 <a href="{% url 'inspiration' %}" class="block text-slate-300 hover:text-sky-400 py-2">Inspiration</a>
                 <a href="#support" data-support-open class="block text-slate-300 hover:text-sky-400 py-2">Support Me</a>
                 <a href="{% url 'contact' %}" class="block text-slate-300 hover:text-sky-400 py-2">Contact</a>
-                <a href="{% url 'hire_me' %}" class="block text-sky-400 py-2 font-semibold">Hire Me</a>
+                <a href="{% url 'hire_me' %}" class="block text-red-400 py-2 font-semibold">Hire Me</a>
             </div>
         </div>
     </nav>
@@ -410,16 +377,16 @@
     </main>
 
     {% if support_settings.is_active %}
-    <section id="support" class="support-strip border-y border-slate-800 bg-slate-900/70">
+    <section id="support" class="border-y border-slate-800 bg-slate-900/70">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <h2 class="font-semibold text-slate-100">{{ support_settings.title }}</h2>
             <div class="flex flex-wrap items-center gap-2" aria-label="Choose a support amount">
                 {% for amount in support_settings.suggested_amounts %}
-                <button type="button" data-support-open-amount="{{ amount }}" class="support-strip-button px-4 py-2 rounded-full border border-slate-700 bg-slate-800 text-sm font-semibold text-slate-200 hover:border-sky-500 hover:text-sky-400 transition-colors">
+                <button type="button" data-support-open-amount="{{ amount }}" class="support-strip-button px-4 py-2 rounded-full border border-slate-700 bg-slate-800 text-sm font-semibold text-slate-200 hover:border-red-700 hover:text-red-400 transition-colors">
                     ₦{{ amount|intcomma }}
                 </button>
                 {% endfor %}
-                <button type="button" data-support-open-other class="px-4 py-2 text-sm font-semibold text-sky-400 hover:text-emerald-400">Other</button>
+                <button type="button" data-support-open-other class="px-4 py-2 text-sm font-semibold text-red-400 hover:text-red-300">Other</button>
             </div>
         </div>
     </section>
@@ -448,7 +415,7 @@
                     </label>
                     <div class="mt-2 flex flex-wrap gap-1.5" role="group" aria-label="Suggested support amounts">
                         {% for amount in support_settings.suggested_amounts %}
-                        <button type="button" data-support-amount="{{ amount }}" aria-pressed="false" class="support-amount-button rounded-full border border-transparent bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:border-sky-300">
+                        <button type="button" data-support-amount="{{ amount }}" aria-pressed="false" class="support-amount-button rounded-full border border-transparent bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:border-red-200">
                             ₦{{ amount|intcomma }}
                         </button>
                         {% endfor %}
@@ -466,7 +433,7 @@
                     </div>
                 </div>
                 {% if paystack_enabled %}
-                <button type="submit" class="w-full rounded-full bg-gradient-to-r from-sky-600 to-emerald-600 py-3.5 text-sm font-semibold text-white hover:from-sky-700 hover:to-emerald-700 transition-colors">
+                <button type="submit" class="w-full rounded-full bg-red-900 py-3.5 text-sm font-semibold text-white hover:bg-red-800 transition-colors">
                     Support with ₦<span data-support-submit-amount>{{ support_default_amount|intcomma }}</span>
                 </button>
                 <p class="text-center text-xs text-gray-500">Secure checkout powered by Paystack.</p>
