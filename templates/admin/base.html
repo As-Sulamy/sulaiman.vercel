@@ -1,9 +1,14 @@
 {% load i18n static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (localStorage.getItem('portfolio-theme') === 'light') {
+            document.documentElement.classList.replace('theme-dark', 'theme-light');
+        }
+    </script>
     <title>{% block title %}{% if title %}{{ title }} | {% endif %}{% trans 'Django Admin' %}{% endblock %}</title>
     {% if profile.profile_image %}
     <link rel="icon" type="image/png" href="{{ profile.profile_image.url }}">
@@ -35,9 +40,12 @@
     <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
     <link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
     {% block extrastyle %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/admin-theme.css' %}">
+    <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'admin/js/jquery.init.js' %}"></script>
     {% block extrahead %}{% endblock %}
 </head>
-<body class="text-slate-100 antialiased min-h-screen flex">
+<body class="admin-shell text-slate-100 antialiased min-h-screen flex {% block bodyclass %}{% endblock %}">
     {% if not is_popup %}
     <aside class="admin-sidebar w-64 min-h-screen fixed left-0 top-0 border-r border-slate-700 flex flex-col">
         <div class="p-6 border-b border-slate-700">
@@ -53,7 +61,7 @@
                 <i class="fas fa-home w-5 mr-3"></i>{% trans 'Home' %}
             </a>
             
-            {% for app in app_list|dictsort:"name" %}
+            {% for app in available_apps|dictsort:"name" %}
             <div class="mt-4">
                 <div class="px-6 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     {{ app.name }}
@@ -81,9 +89,12 @@
             <a href="{% url 'admin:password_change' %}" class="flex items-center text-slate-400 hover:text-sky-400 text-sm py-2 transition-colors">
                 <i class="fas fa-key w-5 mr-2"></i>{% trans 'Change password' %}
             </a>
-            <a href="{% url 'admin:logout' %}" class="flex items-center text-slate-400 hover:text-red-400 text-sm py-2 transition-colors">
-                <i class="fas fa-sign-out-alt w-5 mr-2"></i>{% trans 'Log out' %}
-            </a>
+            <form method="post" action="{% url 'admin:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="flex items-center text-slate-400 hover:text-red-400 text-sm py-2 transition-colors">
+                    <i class="fas fa-sign-out-alt w-5 mr-2"></i>{% trans 'Log out' %}
+                </button>
+            </form>
         </div>
         {% endif %}
     </aside>
@@ -101,7 +112,10 @@
                     </div>
                     {% endblock %}
                 </div>
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <button type="button" data-theme-toggle aria-label="Switch to light mode" title="Switch to light mode" aria-pressed="false" class="admin-theme-toggle">
+                        <i data-theme-icon class="fas fa-sun" aria-hidden="true"></i>
+                    </button>
                     <a href="/" target="_blank" class="text-slate-400 hover:text-sky-400 transition-colors" title="{% trans 'View site' %}">
                         <i class="fas fa-external-link-alt"></i>
                     </a>
@@ -128,7 +142,7 @@
             
             {% block content %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {% for app in app_list|dictsort:"name" %}
+                {% for app in available_apps|dictsort:"name" %}
                 <div class="bg-slate-800/50 rounded-2xl border border-slate-700 overflow-hidden">
                     <div class="bg-slate-800 px-6 py-4 border-b border-slate-700">
                         <h2 class="text-lg font-bold text-slate-100">{{ app.name }}</h2>
@@ -159,8 +173,8 @@
     </main>
     
     {% block extrascript %}
-    <script src="{% static 'admin/js/jquery.init.js' %}"></script>
     <script src="{% static 'admin/js/core.js' %}"></script>
+    <script src="{% static 'js/admin-theme.js' %}" defer></script>
     {% endblock %}
 </body>
 </html>

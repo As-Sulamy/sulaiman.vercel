@@ -474,13 +474,19 @@ class InspirationView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(get_portfolio_context())
-        inspirations = list(Inspiration.objects.filter(is_active=True))
-        total = len(inspirations)
+        inspiration_query = Inspiration.objects.filter(is_active=True).order_by('order', 'name')
+        total = inspiration_query.count()
+        inspirations = list(inspiration_query[:5])
+        slot_positions = (14, 32, 50, 68, 86)
+        slot_tops = (25, 15, 20, 15, 25)
+
         for index, inspiration in enumerate(inspirations):
-            position = 50 if total == 1 else 15 + (70 * index / (total - 1))
-            inspiration.tree_position = f'{position:.2f}'
-            inspiration.tree_svg_x = round(position * 8)
-            inspiration.tree_branch_delay = 650 + (index * 150)
-            inspiration.tree_node_delay = 1100 + (index * 180)
+            slot = 2 if total == 1 else round(index * 4 / (len(inspirations) - 1))
+            inspiration.tree_slot = slot
+            inspiration.tree_position = f'{slot_positions[slot]:.2f}'
+            inspiration.tree_top = f'{slot_tops[slot]:.2f}'
+            inspiration.tree_node_delay = 500 + (index * 120)
+
         context['inspirations'] = inspirations
+        context['has_more_inspirations'] = total > 5
         return context

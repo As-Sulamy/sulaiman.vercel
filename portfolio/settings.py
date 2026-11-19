@@ -68,6 +68,17 @@ DATABASES = {
 }
 
 # DATABASES = {
+#     "default": {
+#         "ENGINE": "django_mongodb_backend",
+#         "HOST": "mongodb+srv://sulaimanbello249_db_user:VQ3vdb9Hz0zt2M3n@myportfolio.h0ekt6p.mongodb.net/",
+#         "NAME": "sample_mflix",  # or the name of your database
+#     },
+# }
+
+# sulaimanbello249_db_user
+# VQ3vdb9Hz0zt2M3n
+
+# DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'railway',

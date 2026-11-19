@@ -1,9 +1,14 @@
 {% load i18n static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (localStorage.getItem('portfolio-theme') === 'light') {
+            document.documentElement.classList.replace('theme-dark', 'theme-light');
+        }
+    </script>
     <title>{% trans 'Log in' %} | {% trans 'Django Admin' %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -22,8 +27,12 @@
         body { background-color: #0f172a; }
         .gradient-text { background: linear-gradient(135deg, #38bdf8, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
+    <link rel="stylesheet" href="{% static 'css/admin-theme.css' %}">
 </head>
 <body class="text-slate-100 antialiased min-h-screen flex items-center justify-center">
+    <button type="button" data-theme-toggle aria-label="Switch to light mode" title="Switch to light mode" aria-pressed="false" class="admin-theme-toggle admin-login-theme-toggle">
+        <i data-theme-icon class="fas fa-sun" aria-hidden="true"></i>
+    </button>
     <div class="absolute inset-0 overflow-hidden">
         <div class="absolute top-1/4 -left-20 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl"></div>
         <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
@@ -110,5 +119,6 @@
             </a>
         </div>
     </div>
+    <script src="{% static 'js/admin-theme.js' %}" defer></script>
 </body>
 </html>

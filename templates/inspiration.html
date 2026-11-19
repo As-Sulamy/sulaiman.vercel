@@ -11,34 +11,33 @@
             <p class="text-lg text-slate-400">The people and ideas that shape my journey. Select a person to learn more about them.</p>
         </header>
 
-        <div class="inspiration-tree-scene" aria-label="An animated tree showing me as the root and the people who inspire me on its branches">
-            <svg class="inspiration-tree-art" viewBox="0 0 800 560" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <div class="inspiration-tree-scene" aria-label="An animated tree with five branches for the people who inspire me and my profile as its root">
+            <svg class="inspiration-tree-art" viewBox="0 0 540 520" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
                 <defs>
                     <linearGradient id="inspiration-tree-gradient" x1="0" y1="1" x2="1" y2="0">
                         <stop offset="0%" stop-color="#10b981"/>
                         <stop offset="100%" stop-color="#38bdf8"/>
                     </linearGradient>
                 </defs>
-                <path pathLength="1" class="tree-trunk-edge" style="--tree-draw-delay: 180ms" d="M365 440 C390 355 387 292 396 220"/>
-                <path pathLength="1" class="tree-trunk-edge" style="--tree-draw-delay: 180ms" d="M435 440 C410 355 413 292 404 220"/>
-                <path pathLength="1" style="--tree-draw-delay: 650ms" d="M396 258 C340 246 250 188 82 195"/>
-                <path pathLength="1" style="--tree-draw-delay: 650ms" d="M404 258 C460 246 550 188 718 195"/>
-                <path pathLength="1" style="--tree-draw-delay: 700ms" d="M400 258 C398 220 400 178 400 142"/>
-                <path pathLength="1" class="tree-fine-branch" style="--tree-draw-delay: 850ms" d="M332 224 C294 218 276 197 252 174"/>
-                <path pathLength="1" class="tree-fine-branch" style="--tree-draw-delay: 850ms" d="M468 224 C506 218 524 197 548 174"/>
-                <path pathLength="1" class="tree-fine-branch" style="--tree-draw-delay: 900ms" d="M378 198 C360 180 357 164 354 145"/>
-                <path pathLength="1" class="tree-fine-branch" style="--tree-draw-delay: 900ms" d="M422 198 C440 180 443 164 446 145"/>
-                <path pathLength="1" class="tree-fine-branch" style="--tree-draw-delay: 900ms" d="M286 207 C260 208 246 196 230 180"/>
-                <path pathLength="1" class="tree-fine-branch" style="--tree-draw-delay: 900ms" d="M514 207 C540 208 554 196 570 180"/>
-                {% for inspiration in inspirations %}
-                <path pathLength="1" class="tree-fine-branch" style="--tree-draw-delay: {{ inspiration.tree_branch_delay }}ms" d="M{{ inspiration.tree_svg_x }} 208 C{{ inspiration.tree_svg_x }} 194 {{ inspiration.tree_svg_x }} 183 {{ inspiration.tree_svg_x }} 164"/>
-                {% endfor %}
-                <path pathLength="1" class="tree-fine-branch" style="--tree-draw-delay: 350ms" d="M366 448 C332 433 303 443 268 428 C299 432 319 422 282 416 C316 420 340 426 366 439"/>
-                <path pathLength="1" class="tree-fine-branch" style="--tree-draw-delay: 350ms" d="M434 448 C468 433 497 443 532 428 C501 432 481 422 518 416 C484 420 460 426 434 439"/>
+                <path pathLength="1" class="tree-trunk-edge" style="--tree-draw-delay: 100ms" d="M228 432 C251 365 258 293 256 227 C255 207 251 190 244 174"/>
+                <path pathLength="1" class="tree-trunk-edge" style="--tree-draw-delay: 100ms" d="M312 432 C289 365 282 293 284 227 C285 207 289 190 296 174"/>
+                <path pathLength="1" class="tree-trunk-spine" style="--tree-draw-delay: 150ms" d="M270 432 C271 350 269 278 270 205"/>
+                <path pathLength="1" class="tree-slot-branch" data-tree-branch-slot="1" style="--tree-draw-delay: 360ms" d="M258 238 C213 222 155 193 76 171"/>
+                <path pathLength="1" class="tree-slot-branch" data-tree-branch-slot="2" style="--tree-draw-delay: 440ms" d="M260 220 C229 190 202 151 173 118"/>
+                <path pathLength="1" class="tree-slot-branch" data-tree-branch-slot="3" style="--tree-draw-delay: 520ms" d="M270 218 C269 191 270 166 270 143"/>
+                <path pathLength="1" class="tree-slot-branch" data-tree-branch-slot="4" style="--tree-draw-delay: 600ms" d="M280 220 C311 190 338 151 367 118"/>
+                <path pathLength="1" class="tree-slot-branch" data-tree-branch-slot="5" style="--tree-draw-delay: 680ms" d="M282 238 C327 222 385 193 464 171"/>
+                <path pathLength="1" class="tree-leaf-branch" style="--tree-draw-delay: 720ms" d="M188 202 C166 195 157 177 145 157 C159 173 169 181 181 183"/>
+                <path pathLength="1" class="tree-leaf-branch" style="--tree-draw-delay: 760ms" d="M211 174 C192 158 187 139 180 122 C193 141 202 148 216 153"/>
+                <path pathLength="1" class="tree-leaf-branch" style="--tree-draw-delay: 800ms" d="M249 162 C235 144 231 127 229 108 C239 128 248 136 260 140"/>
+                <path pathLength="1" class="tree-leaf-branch" style="--tree-draw-delay: 840ms" d="M352 174 C371 158 376 139 383 122 C370 141 361 148 347 153"/>
+                <path pathLength="1" class="tree-leaf-branch" style="--tree-draw-delay: 880ms" d="M329 202 C351 195 360 177 372 157 C358 173 348 181 336 183"/>
+                <path pathLength="1" class="tree-root-branch" style="--tree-draw-delay: 240ms" d="M230 423 C197 408 163 420 119 407 C155 411 176 396 145 389 C180 391 207 404 234 416"/>
+                <path pathLength="1" class="tree-root-branch" style="--tree-draw-delay: 240ms" d="M310 423 C343 408 377 420 421 407 C385 411 364 396 395 389 C360 391 333 404 306 416"/>
             </svg>
 
             {% for inspiration in inspirations %}
-            <button type="button" data-tree-detail="inspiration-details-{{ inspiration.pk }}" style="left: {{ inspiration.tree_position }}%; --tree-node-delay: {{ inspiration.tree_node_delay }}ms" class="inspiration-tree-person inspiration-tree-mentor">
+            <button type="button" data-tree-detail="inspiration-details-{{ inspiration.pk }}" data-tree-slot="{{ inspiration.tree_slot }}" style="left: {{ inspiration.tree_position }}%; --tree-node-top: {{ inspiration.tree_top }}%; --tree-node-delay: {{ inspiration.tree_node_delay }}ms" class="inspiration-tree-person inspiration-tree-mentor">
                 {% if inspiration.image %}
                 <img src="{{ inspiration.image.url }}" alt="" class="inspiration-tree-portrait">
                 {% else %}
@@ -60,7 +59,10 @@
             </button>
         </div>
         {% if not inspirations %}
-        <p class="mt-4 text-center text-sm text-slate-400">Add the people who inspire you in Django Admin under Inspirations to grow the branches.</p>
+        {% comment %} <p class="mt-4 text-center text-sm text-slate-400">Add up to five people in Django Admin under Inspirations to place their portraits on the branches.</p> {% endcomment %}
+        {% endif %}
+        {% if has_more_inspirations %}
+        <p class="mt-4 text-center text-sm text-slate-500">The tree has five branches. It shows the first five active people by display order; reorder or deactivate entries in Admin to choose who appears.</p>
         {% endif %}
     </div>
 </section>

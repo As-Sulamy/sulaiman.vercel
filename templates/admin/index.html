@@ -1,12 +1,14 @@
 {% extends "admin/base.html" %}
 
 {% block content %}
+<div class="admin-dashboard">
 <div class="mb-8">
-    <h1 class="text-3xl font-bold text-slate-100 mb-2">Dashboard</h1>
-    <p class="text-slate-400">Manage your portfolio website</p>
+    <p class="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-emerald-400">Portfolio control center</p>
+    <h1 class="text-3xl font-bold text-slate-100 mb-2">Welcome back</h1>
+    <p class="text-slate-400">Manage your content, showcase your work, and keep your portfolio up to date.</p>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
     <a href="projects/project/" class="bg-slate-800/50 rounded-2xl border border-slate-700 p-6 hover:border-sky-500 transition-all">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-sky-500/20 rounded-xl flex items-center justify-center">
@@ -81,6 +83,30 @@
             </div>
         </div>
     </a>
+
+    <a href="projects/inspiration/" class="bg-slate-800/50 rounded-2xl border border-slate-700 p-6 hover:border-emerald-500 transition-all">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                <i class="fas fa-seedling text-2xl text-emerald-400"></i>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-slate-100">{{ total_inspirations|default:"0" }}</p>
+                <p class="text-slate-500 text-sm">Inspiration tree</p>
+            </div>
+        </div>
+    </a>
+
+    <a href="projects/hirerequest/" class="bg-slate-800/50 rounded-2xl border border-slate-700 p-6 hover:border-sky-500 transition-all">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-sky-500/20 rounded-xl flex items-center justify-center">
+                <i class="fas fa-briefcase text-2xl text-sky-400"></i>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-slate-100">{{ total_hire_requests|default:"0" }}</p>
+                <p class="text-slate-500 text-sm">Hire inquiries</p>
+            </div>
+        </div>
+    </a>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
@@ -138,5 +164,7 @@
             {% endfor %}
         </div>
     </div>
+</div>
+
 </div>
 {% endblock %}

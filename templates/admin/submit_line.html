@@ -1,11 +1,15 @@
 {% load i18n admin_urls %}
 <div class="submit-row">
-    {% if show_save_and_add_another %}<input type="submit" value="{% trans 'Save and add another' %}" name="_addanother" class="bg-slate-700 text-slate-100 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors" />{% endif %}
-    {% if show_save_and_continue %}<input type="submit" value="{% trans 'Save and continue editing' %}" name="_continue" class="bg-slate-700 text-slate-100 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors" />{% endif %}
-    {% if show_save %}<input type="submit" value="{% trans 'Save' %}" class="bg-gradient-to-r from-sky-500 to-emerald-500 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-sky-500/25 transition-all" />{% endif %}
-    {% if show_delete_link %}
-        <p class="deletelink-box">
-            <a href="{% url 'admin:projects_blog_delete' object_id %}" class="deletelink bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">{% trans "Delete" %}</a>
-        </p>
+    {% if show_save %}<input type="submit" value="{% trans 'Save' %}" class="default" name="_save">{% endif %}
+    {% if show_save_as_new %}<input type="submit" value="{% trans 'Save as new' %}" name="_saveasnew">{% endif %}
+    {% if show_save_and_add_another %}<input type="submit" value="{% trans 'Save and add another' %}" name="_addanother">{% endif %}
+    {% if show_save_and_continue %}<input type="submit" value="{% if can_change %}{% trans 'Save and continue editing' %}{% else %}{% trans 'Save and view' %}{% endif %}" name="_continue">{% endif %}
+    {% if show_close %}
+        {% url opts|admin_urlname:'changelist' as changelist_url %}
+        <a href="{% add_preserved_filters changelist_url %}" class="closelink">{% trans 'Close' %}</a>
+    {% endif %}
+    {% if show_delete_link and original %}
+        {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+        <a href="{% add_preserved_filters delete_url %}" class="deletelink">{% trans 'Delete' %}</a>
     {% endif %}
 </div>

@@ -1,14 +1,15 @@
 # Portfolio Website - Django
 
-A professional portfolio website built with Django, featuring a dark mode theme with Tailwind CSS.
+A professional portfolio website built with Django, featuring matching dark and light themes across the public site and its content dashboard.
 
 ## Features
 
 - **Project Showcase**: Display projects with images, technologies, and external links
 - **Professional Blog**: Markdown-supported technical articles
 - **Contact System**: Functional contact form with database storage
-- **Admin Dashboard**: Fully configured Django Admin for content management
-- **Dark Theme**: Modern, high-end dark mode design with Tailwind CSS
+- **Admin Dashboard**: Responsive content dashboard with matching dark and light themes
+- **Theme Toggle**: Persistent dark/light mode shared between the public site and admin
+- **Inspiration Tree**: An animated tree with five fixed branches for up to five inspirations
 
 ## Tech Stack
 
@@ -32,9 +33,10 @@ pip install -r requirements.txt
 
 ### 3. Run Migrations
 ```bash
-python manage.py makemigrations
 python manage.py migrate
 ```
+
+Migrations require a reachable MongoDB instance and are not part of the static asset build.
 
 ### 4. Create Superuser
 ```bash
@@ -47,6 +49,8 @@ python manage.py runserver
 ```
 
 Visit `http://127.0.0.1:8000` for the website and `http://127.0.0.1:8000/admin` for the admin dashboard.
+
+The Vercel static build copies files from `media/` into its static output and serves them under `/media/`, independently of MongoDB. Add and commit any images, documents, or other media that must ship with the deployment. Django admin uploads written to the server's local filesystem are not durable on Vercel and are not automatically included in future deployments. Database-backed pages still need MongoDB to render their content; this only makes the media files independently available.
 
 ### Paystack Support
 
@@ -73,7 +77,7 @@ Then open Django Admin → **Paystack & Support Settings**:
 
 Do not commit Paystack credentials or your `DJANGO_SECRET_KEY` to source control. The older `PAYSTACK_SECRET_KEY` environment variable remains supported as a fallback for existing deployments.
 
-Your profile and About details are editable in Admin under **Profile**. Add people under **Inspirations**; enter their short biography in **Description**, what you learned from them in **Why inspires**, and an optional image credit. The animated Inspiration tree puts your profile at its root and these people on the branches. Selecting a node opens its details. Project inquiries from the separate **Hire Me** form are saved in Admin under **Hire Me Inquiries**.
+Your profile and About details are editable in Admin under **Profile**. Add up to five people under **Inspirations**; enter their short biography in **About / biography**, what you learned from them in **Why they inspire me**, and an optional image credit. Their portraits fill fixed branch positions in the animated tree, with unused branches remaining visible. Your profile remains at the root, and selecting a node opens its details. The admin dashboard shares the site's saved dark/light theme preference. Project inquiries from the separate **Hire Me** form are saved in Admin under **Hire Me Inquiries**.
 
 ## Project Structure
 

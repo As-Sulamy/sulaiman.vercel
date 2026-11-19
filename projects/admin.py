@@ -183,7 +183,7 @@ class CustomAdminSite(AdminSite):
     site_title = "Portfolio Admin"
     index_title = "Welcome to Portfolio Administration"
     login_template = 'admin/login.html'
-    index_template = 'admin/base.html'
+    index_template = 'admin/index.html'
     
     def each_context(self, request):
         ensure_default_blogs()
@@ -198,6 +198,8 @@ class CustomAdminSite(AdminSite):
             'total_skills': Skill.objects.count(),
             'total_messages': Contact.objects.count(),
             'unread_messages': Contact.objects.filter(read=False).count(),
+            'total_inspirations': Inspiration.objects.filter(is_active=True).count(),
+            'total_hire_requests': HireRequest.objects.count(),
             'recent_projects': Project.objects.all()[:5],
             'recent_messages': Contact.objects.all()[:5],
             'recent_blogs': Blog.objects.all()[:5],

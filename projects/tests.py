@@ -133,16 +133,49 @@ class InspirationPageTests(TestCase):
         self.assertContains(response, 'data-tree-detail="my-profile-details"')
         self.assertContains(response, 'data-tree-detail="inspiration-details-')
         self.assertContains(response, 'class="inspiration-tree-art"')
-        self.assertContains(response, 'style="left: 50.00%; --tree-node-delay: 1100ms"')
+        self.assertContains(response, 'data-tree-slot="2"')
+        self.assertContains(
+            response,
+            'style="left: 50.00%; --tree-node-top: 20.00%; --tree-node-delay: 500ms"',
+        )
 
-    def test_inspiration_nodes_are_spread_across_tree_branches(self):
+    def test_tree_keeps_five_fixed_branches_when_three_people_are_added(self):
         for name in ('First', 'Second', 'Third'):
             Inspiration.objects.create(name=name, is_active=True)
 
         response = self.client.get(reverse('inspiration'))
 
         positions = [item.tree_position for item in response.context['inspirations']]
-        self.assertEqual(positions, ['15.00', '50.00', '85.00'])
+        self.assertEqual(positions, ['14.00', '50.00', '86.00'])
+        self.assertEqual(response.content.decode().count('class="tree-slot-branch"'), 5)
+
+    def test_tree_shows_at_most_five_active_people_and_explains_the_limit(self):
+        for index in range(6):
+            Inspiration.objects.create(name=f'Inspiration {index}', is_active=True)
+
+        response = self.client.get(reverse('inspiration'))
+        inspirations = response.context['inspirations']
+
+        self.assertEqual(len(inspirations), 5)
+        self.assertTrue(response.context['has_more_inspirations'])
+        self.assertContains(response, 'The tree has five branches.')
+        self.assertNotContains(response, 'Inspiration 5')
+
+    def test_support_bar_has_light_theme_contrast_styles(self):
+        response = self.client.get(reverse('inspiration'))
+
+        self.assertContains(response, 'class="support-strip-button')
+        self.assertContains(response, 'html.theme-light .support-strip-button')
+        self.assertContains(response, 'html.theme-light #support')
+
+    def test_desktop_navigation_places_theme_toggle_after_hire_button(self):
+        response = self.client.get(reverse('inspiration'))
+        content = response.content.decode()
+        desktop_nav_start = content.index('hidden xl:flex items-center gap-4 ml-auto')
+        hire_button = content.index('>Hire Me</a>', desktop_nav_start)
+        theme_toggle = content.index('data-theme-toggle', hire_button)
+
+        self.assertLess(hire_button, theme_toggle)
 
     def test_inspiration_popup_has_admin_managed_about_and_influence_details(self):
         Inspiration.objects.create(
@@ -168,6 +201,54 @@ class InspirationPageTests(TestCase):
 
 
 class InspirationAdminTests(TestCase):
+    def test_dashboard_uses_portfolio_template_and_theme_switcher(self):
+        user_model = get_user_model()
+        user = user_model.objects.create_superuser(
+            username='dashboard-admin',
+            email='dashboard-admin@example.com',
+            password='test-password',
+        )
+        self.client.force_login(user)
+
+        response = self.client.get(reverse('admin:index'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Portfolio control center')
+        self.assertContains(response, 'class="admin-dashboard"')
+        self.assertContains(response, 'Inspiration tree')
+        self.assertContains(response, 'data-theme-toggle')
+        self.assertContains(response, 'method="post" action="/admin/logout/"')
+
+    def test_support_settings_changelist_shows_add_action_and_model_navigation(self):
+        user_model = get_user_model()
+        user = user_model.objects.create_superuser(
+            username='support-admin',
+            email='support-admin@example.com',
+            password='test-password',
+        )
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse('admin:projects_supportsettings_changelist')
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'class="admin-page-heading"')
+        self.assertContains(response, 'admin-list-tools')
+        content = response.content.decode()
+        self.assertLess(
+            content.index('/static/admin/css/changelists.css'),
+            content.index('/static/css/admin-theme.css'),
+        )
+        self.assertContains(
+            response,
+            reverse('admin:projects_supportsettings_add'),
+        )
+        self.assertContains(
+            response,
+            reverse('admin:projects_inspiration_changelist'),
+        )
+
     def test_inspiration_admin_exposes_popup_content_fields(self):
         user_model = get_user_model()
         user = user_model.objects.create_superuser(
@@ -186,6 +267,11 @@ class InspirationAdminTests(TestCase):
         self.assertContains(response, 'Why they inspire me')
         self.assertContains(response, 'About / biography')
         self.assertContains(response, 'Photo credit')
+        self.assertContains(response, '/static/js/admin-theme.js')
+        self.assertContains(
+            response,
+            reverse('admin:projects_inspiration_delete', args=[inspiration.pk]),
+        )
 
 
 class SupportSettingsTests(TestCase):
