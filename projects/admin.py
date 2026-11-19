@@ -511,7 +511,18 @@ class InspirationAdmin(admin.ModelAdmin):
     list_display = ['name', 'role', 'order', 'is_active']
     list_filter = ['is_active']
     list_editable = ['order', 'is_active']
-    search_fields = ['name', 'role', 'description']
+    search_fields = ['name', 'role', 'description', 'why_inspires']
+    fieldsets = (
+        ('Tree node', {
+            'fields': ('name', 'role', 'image', 'photo_credit', 'link'),
+        }),
+        ('Popup details', {
+            'fields': ('description', 'why_inspires'),
+        }),
+        ('Display', {
+            'fields': ('order', 'is_active'),
+        }),
+    )
 
 
 @admin.register(Education, site=admin_site)

@@ -271,8 +271,22 @@ class Service(models.Model):
 class Inspiration(models.Model):
     name = models.CharField(max_length=150)
     role = models.CharField(max_length=150, blank=True)
-    description = models.TextField(blank=True)
+    description = models.TextField(
+        blank=True,
+        verbose_name='About / biography',
+        help_text='Short biography shown in the About section of their tree popup.',
+    )
+    why_inspires = models.TextField(
+        blank=True,
+        verbose_name='Why they inspire me',
+        help_text='What you learned from them or why they inspire you.',
+    )
     image = models.ImageField(upload_to='inspirations/', blank=True)
+    photo_credit = models.CharField(
+        max_length=250,
+        blank=True,
+        help_text='Optional photographer/source credit for their image.',
+    )
     link = models.URLField(blank=True, help_text="Optional link to their work or profile")
     order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)

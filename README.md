@@ -73,7 +73,7 @@ Then open Django Admin → **Paystack & Support Settings**:
 
 Do not commit Paystack credentials or your `DJANGO_SECRET_KEY` to source control. The older `PAYSTACK_SECRET_KEY` environment variable remains supported as a fallback for existing deployments.
 
-Your profile and About details are editable in Admin under **Profile**. Add the people who inspire you under **Inspirations**; their nodes and your profile node open detail popups on the Inspiration page. Project inquiries from the separate **Hire Me** form are saved in Admin under **Hire Me Inquiries**.
+Your profile and About details are editable in Admin under **Profile**. Add people under **Inspirations**; enter their short biography in **Description**, what you learned from them in **Why inspires**, and an optional image credit. The animated Inspiration tree puts your profile at its root and these people on the branches. Selecting a node opens its details. Project inquiries from the separate **Hire Me** form are saved in Admin under **Hire Me Inquiries**.
 
 ## Project Structure
 

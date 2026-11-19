@@ -122,6 +122,7 @@ class InspirationPageTests(TestCase):
         Inspiration.objects.create(
             name='Ada Lovelace',
             role='Computer programming pioneer',
+            why_inspires='She imagined what computers could do.',
             is_active=True,
         )
 
@@ -131,7 +132,32 @@ class InspirationPageTests(TestCase):
         self.assertContains(response, 'Ada Lovelace')
         self.assertContains(response, 'data-tree-detail="my-profile-details"')
         self.assertContains(response, 'data-tree-detail="inspiration-details-')
-        self.assertContains(response, 'style="--tree-node-delay: 1300ms"')
+        self.assertContains(response, 'class="inspiration-tree-art"')
+        self.assertContains(response, 'style="left: 50.00%; --tree-node-delay: 1100ms"')
+
+    def test_inspiration_nodes_are_spread_across_tree_branches(self):
+        for name in ('First', 'Second', 'Third'):
+            Inspiration.objects.create(name=name, is_active=True)
+
+        response = self.client.get(reverse('inspiration'))
+
+        positions = [item.tree_position for item in response.context['inspirations']]
+        self.assertEqual(positions, ['15.00', '50.00', '85.00'])
+
+    def test_inspiration_popup_has_admin_managed_about_and_influence_details(self):
+        Inspiration.objects.create(
+            name='Ada Lovelace',
+            description='Her work paved the way for computing.',
+            why_inspires='She imagined what computers could do.',
+            photo_credit='Public domain',
+        )
+
+        response = self.client.get(reverse('inspiration'))
+
+        self.assertContains(response, 'Her work paved the way for computing.')
+        self.assertContains(response, 'She imagined what computers could do.')
+        self.assertContains(response, 'Why they inspire me')
+        self.assertContains(response, 'Photo: Public domain')
 
     def test_inactive_inspirations_are_not_rendered(self):
         Inspiration.objects.create(name='Hidden entry', is_active=False)
@@ -139,6 +165,27 @@ class InspirationPageTests(TestCase):
         response = self.client.get(reverse('inspiration'))
 
         self.assertNotContains(response, 'Hidden entry')
+
+
+class InspirationAdminTests(TestCase):
+    def test_inspiration_admin_exposes_popup_content_fields(self):
+        user_model = get_user_model()
+        user = user_model.objects.create_superuser(
+            username='tree-admin',
+            email='tree-admin@example.com',
+            password='test-password',
+        )
+        inspiration = Inspiration.objects.create(name='Admin field check')
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse('admin:projects_inspiration_change', args=[inspiration.pk])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Why they inspire me')
+        self.assertContains(response, 'About / biography')
+        self.assertContains(response, 'Photo credit')
 
 
 class SupportSettingsTests(TestCase):
