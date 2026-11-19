@@ -50,7 +50,7 @@ python manage.py runserver
 
 Visit `http://127.0.0.1:8000` for the website and `http://127.0.0.1:8000/admin` for the admin dashboard.
 
-The Vercel static build copies files from `media/` into its static output and serves them under `/media/`, independently of MongoDB. Add and commit any images, documents, or other media that must ship with the deployment. Django admin uploads written to the server's local filesystem are not durable on Vercel and are not automatically included in future deployments. Database-backed pages still need MongoDB to render their content; this only makes the media files independently available.
+Vercel automatically collects Django static files. The build script copies files from `media/` into `public/media/`, so Vercel serves them under `/media/` independently of MongoDB. Add and commit any images, documents, or other media that must ship with the deployment. Django admin uploads written to the server's local filesystem are not durable on Vercel and are not automatically included in future deployments. Database-backed pages still need MongoDB to render their content; this only makes the media files independently available.
 
 ### Paystack Support
 
