@@ -68,17 +68,6 @@ DATABASES = {
 }
 
 # DATABASES = {
-#     "default": {
-#         "ENGINE": "django_mongodb_backend",
-#         "HOST": "mongodb+srv://sulaimanbello249_db_user:VQ3vdb9Hz0zt2M3n@myportfolio.h0ekt6p.mongodb.net/",
-#         "NAME": "sample_mflix",  # or the name of your database
-#     },
-# }
-
-# sulaimanbello249_db_user
-# VQ3vdb9Hz0zt2M3n
-
-# DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'railway',
@@ -120,7 +109,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'your.email@gmail.com'  # Replace with your Gmail address
+EMAIL_HOST_USER = 'sulaimanbello249@gmail.com'  # Replace with your Gmail address
 EMAIL_HOST_PASSWORD = 'your-app-password'  # Replace with your Gmail App Password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 CONTACT_EMAIL = 'your.email@gmail.com'  # Email where you want to receive messages
